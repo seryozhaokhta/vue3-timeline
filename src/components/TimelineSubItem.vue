@@ -6,6 +6,18 @@
             <v-list-item-title>{{ subItem.title }}</v-list-item-title>
             <v-list-item-subtitle v-if="subItem.dates">{{ subItem.dates }}</v-list-item-subtitle>
             <v-btn v-if="subItem.expandable" @click="toggleExpand(subItem)" class="styled-button">
+                <v-icon v-if="subItem.type === 'subperiods'">
+                    <img :src="require('@/assets/subperiodsIcon.svg')" alt="Subperiods Icon" />
+                </v-icon>
+                <v-icon v-else-if="subItem.type === 'schools'">
+                    <img :src="require('@/assets/schoolsIcon.svg')" alt="Schools Icon" />
+                </v-icon>
+                <v-icon v-else-if="subItem.type === 'transition'">
+                    <img :src="require('@/assets/transitionIcon.svg')" alt="Transition Icon" />
+                </v-icon>
+                <v-icon v-else-if="subItem.type === 'crisis'">
+                    <img :src="require('@/assets/crisisIcon.svg')" alt="Crisis Icon" />
+                </v-icon>
                 {{ subItem.expanded ? 'Collapse' : 'Expand' }}
             </v-btn>
             <v-expand-transition>
@@ -73,6 +85,12 @@ export default {
     color: white;
     text-transform: none;
     margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.styled-button v-icon {
+    margin-right: 8px;
 }
 
 .styled-button:hover {

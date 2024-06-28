@@ -12,6 +12,9 @@
           </div>
           <div>
             <v-btn v-if="epoch.expandable" @click="toggleExpand(epoch)" class="styled-button">
+              <v-icon>
+                <img :src="require('@/assets/expand_more.svg')" alt="Expand More Icon" />
+              </v-icon>
               {{ epoch.expanded ? 'Collapse' : 'Expand' }}
             </v-btn>
             <v-expand-transition>
@@ -72,6 +75,12 @@ export default {
   color: white;
   text-transform: none;
   margin: 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.styled-button v-icon {
+  margin-right: 8px;
 }
 
 .styled-button:hover {
