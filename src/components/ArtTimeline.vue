@@ -2,18 +2,18 @@
 
 <template>
   <v-container>
-    <v-timeline align="start" side="end">
+    <v-timeline align="start" side="end" dense>
       <v-timeline-item v-for="epoch in timelineData['Western-European-art-periodization']" :key="epoch.id"
         dot-color="grey-darken-1" size="small">
-        <div class="d-inline-flex align-items-start flex-column">
-          <div class="me-4 mb-2">
+        <div class="">
+          <div class="">
             <strong>{{ epoch.epoch }}</strong>
             <div class="text-caption" v-if="epoch.dates">{{ epoch.dates }}</div>
           </div>
           <div>
             <v-btn v-if="epoch.expandable" @click="toggleExpand(epoch)" class="styled-button">
               <v-icon>
-                <img :src="require('@/assets/expand_more.svg')" alt="Expand More Icon" />
+                <img :src="require('@/assets/expand_more.svg')" alt="Expand Icon" />
               </v-icon>
               {{ epoch.expanded ? 'Collapse' : 'Expand' }}
             </v-btn>

@@ -2,7 +2,7 @@
 
 <template>
     <v-list-item-content class="sub-item-content">
-        <div class="d-flex flex-column align-items-start">
+        <div class="">
             <v-list-item-title>{{ subItem.title }}</v-list-item-title>
             <v-list-item-subtitle v-if="subItem.dates">{{ subItem.dates }}</v-list-item-subtitle>
             <v-btn v-if="subItem.expandable" @click="toggleExpand(subItem)" class="styled-button">
@@ -22,36 +22,11 @@
             </v-btn>
             <v-expand-transition>
                 <v-list v-if="subItem.expanded">
-                    <template v-if="subItem.type === 'subperiods'">
-                        <v-list-item v-for="subperiod in subItem.subperiods" :key="subperiod.title">
+                    <template v-for="subType in subItemTypes" :key="subType.type">
+                        <v-list-item v-for="item in subType.items" :key="item.title">
                             <v-list-item-content>
-                                <v-list-item-title>{{ subperiod.title }}</v-list-item-title>
-                                <v-list-item-subtitle v-if="subperiod.dates">{{ subperiod.dates
-                                    }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </template>
-                    <template v-else-if="subItem.type === 'schools'">
-                        <v-list-item v-for="school in subItem.schools" :key="school.title">
-                            <v-list-item-content>
-                                <v-list-item-title>{{ school.title }}</v-list-item-title>
-                                <v-list-item-subtitle v-if="school.dates">{{ school.dates }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </template>
-                    <template v-else-if="subItem.type === 'transition'">
-                        <v-list-item v-for="transition in subItem.transition" :key="transition.title">
-                            <v-list-item-content>
-                                <v-list-item-title>{{ transition.title }}</v-list-item-title>
-                                <v-list-item-subtitle v-if="transition.dates">{{ transition.dates
-                                    }}</v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </template>
-                    <template v-else-if="subItem.type === 'crisis'">
-                        <v-list-item v-for="crisis in subItem.crisis" :key="crisis.title">
-                            <v-list-item-content>
-                                <v-list-item-title>{{ crisis.title }}</v-list-item-title>
+                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                                <v-list-item-subtitle v-if="item.dates">{{ item.dates }}</v-list-item-subtitle>
                             </v-list-item-content>
                         </v-list-item>
                     </template>
@@ -66,6 +41,17 @@ export default {
     props: {
         subItem: Object
     },
+    computed: {
+        subItemTypes() {
+            const types = ['subperiods', 'schools', 'transition', 'crisis'];
+            return types
+                .map(type => ({
+                    type,
+                    items: this.subItem[type] || []
+                }))
+                .filter(subType => subType.items.length > 0);
+        }
+    },
     methods: {
         toggleExpand(item) {
             item.expanded = !item.expanded;
@@ -77,7 +63,6 @@ export default {
 <style scoped>
 .sub-item-content {
     margin-left: 0;
-    /* Adjust this value as needed to shift the content */
 }
 
 .styled-button {
