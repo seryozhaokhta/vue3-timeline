@@ -4,29 +4,30 @@
   <v-container>
     <v-timeline align="start" side="end" dense>
       <v-timeline-item v-for="epoch in timelineData['Western-European-art-periodization']" :key="epoch.id"
-        dot-color="grey-darken-1" size="small">
-        <div class="">
-          <div class="">
+        dot-color="grey-darken-1" size="x-small">
+        <div class="epoch-container">
+          <div class="epoch-title">
             <strong>{{ epoch.epoch }}</strong>
             <div class="text-caption" v-if="epoch.dates">{{ epoch.dates }}</div>
           </div>
-          <div>
-            <v-btn v-if="epoch.expandable" @click="toggleExpand(epoch)" class="styled-button">
+          <div class="expand-button-container">
+            <v-btn v-if="epoch.expandable" @click="epoch.expanded = !epoch.expanded" class="styled-button">
               <v-icon>
                 <img :src="require('@/assets/expand_more.svg')" alt="Expand Icon" />
               </v-icon>
               {{ epoch.expanded ? 'Collapse' : 'Expand' }}
             </v-btn>
-            <v-expand-transition>
-              <div v-if="epoch.expanded" class="timeline-details">
-                <v-list>
-                  <v-list-item v-for="subItem in epoch.subItems" :key="subItem.title">
-                    <TimelineSubItem :subItem="subItem" />
-                  </v-list-item>
-                </v-list>
-              </div>
-            </v-expand-transition>
+            <div class="vertical-line" v-if="epoch.expandable && epoch.expanded"></div>
           </div>
+          <v-expand-transition>
+            <div v-if="epoch.expanded" class="timeline-details">
+              <v-list>
+                <v-list-item v-for="subItem in epoch.subItems" :key="subItem.title">
+                  <TimelineSubItem v-model="subItem.expanded" :subItem="subItem" />
+                </v-list-item>
+              </v-list>
+            </div>
+          </v-expand-transition>
         </div>
       </v-timeline-item>
     </v-timeline>
@@ -56,9 +57,10 @@ export default {
 
 <style scoped>
 .timeline-details {
-  padding: 0 10px;
-  border-top: 2px solid lightgrey;
-  margin-top: 10px;
+  padding: 10px 0;
+  border-left: 2px solid lightgrey;
+  margin-left: 10px;
+  height: auto;
 }
 
 .text-caption {
@@ -67,7 +69,6 @@ export default {
 
 .v-list-item-content {
   margin-left: 0;
-  /* Adjust this value as needed to shift the content */
 }
 
 .styled-button {

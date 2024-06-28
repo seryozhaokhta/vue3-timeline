@@ -1,11 +1,11 @@
 <!-- src/components/TimelineSubItem.vue -->
 
 <template>
-    <v-list-item-content class="sub-item-content">
-        <div class="">
+    <div class="sub-item-content" data-aos="fade-up">
+        <div class="list-container">
             <v-list-item-title>{{ subItem.title }}</v-list-item-title>
             <v-list-item-subtitle v-if="subItem.dates">{{ subItem.dates }}</v-list-item-subtitle>
-            <v-btn v-if="subItem.expandable" @click="toggleExpand(subItem)" class="styled-button">
+            <v-btn v-if="subItem.expandable" @click="expanded = !expanded" class="styled-button">
                 <v-icon v-if="subItem.type === 'subperiods'">
                     <img :src="require('@/assets/subperiodsIcon.svg')" alt="Subperiods Icon" />
                 </v-icon>
@@ -18,12 +18,13 @@
                 <v-icon v-else-if="subItem.type === 'crisis'">
                     <img :src="require('@/assets/crisisIcon.svg')" alt="Crisis Icon" />
                 </v-icon>
-                {{ subItem.expanded ? 'Collapse' : 'Expand' }}
+                {{ expanded ? 'Collapse' : 'Expand' }}
             </v-btn>
             <v-expand-transition>
-                <v-list v-if="subItem.expanded">
+                <v-list v-show="expanded" ref="subList">
                     <template v-for="subType in subItemTypes" :key="subType.type">
-                        <v-list-item v-for="item in subType.items" :key="item.title">
+                        <v-list-item v-for="item in subType.items" :key="item.title" data-aos="fade-up"
+                            data-aos-delay="50">
                             <v-list-item-content>
                                 <v-list-item-title>{{ item.title }}</v-list-item-title>
                                 <v-list-item-subtitle v-if="item.dates">{{ item.dates }}</v-list-item-subtitle>
@@ -33,28 +34,55 @@
                 </v-list>
             </v-expand-transition>
         </div>
-    </v-list-item-content>
+    </div>
 </template>
 
 <script>
 export default {
     props: {
-        subItem: Object
+        subItem: Object,
+        modelValue: Boolean
+    },
+    data() {
+        return {
+            expanded: this.modelValue
+        }
     },
     computed: {
         subItemTypes() {
             const types = ['subperiods', 'schools', 'transition', 'crisis'];
-            return types
-                .map(type => ({
-                    type,
-                    items: this.subItem[type] || []
-                }))
-                .filter(subType => subType.items.length > 0);
+            return types.map(type => ({
+                type,
+                items: this.subItem[type] || []
+            })).filter(subType => subType.items.length > 0);
+        }
+    },
+    emits: ['update:modelValue'],
+    mounted() {
+        this.initAOS();
+    },
+    watch: {
+        modelValue(newValue) {
+            this.expanded = newValue;
+        },
+        expanded(newValue) {
+            this.$emit('update:modelValue', newValue);
+
+            if (newValue) {
+                this.initAOS();
+            }
         }
     },
     methods: {
         toggleExpand(item) {
             item.expanded = !item.expanded;
+        },
+        initAOS() {
+            if (this.$root.AOS) {
+                this.$root.AOS.refreshHard();
+            } else {
+                setTimeout(this.initAOS, 100);
+            }
         }
     }
 };
@@ -80,5 +108,16 @@ export default {
 
 .styled-button:hover {
     background-color: #999999;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 450px;
+}
+
+.v-list::-webkit-scrollbar {
+    display: none;
 }
 </style>
