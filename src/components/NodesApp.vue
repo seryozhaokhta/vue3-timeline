@@ -41,12 +41,12 @@ export default {
             width: 800,
             height: 600,
             epochs: [
-                { name: "Ancient", position: { x: 100, y: 100 }, isHovered: false },
-                { name: "Medieval", position: { x: 300, y: 100 }, isHovered: false },
-                { name: "Renaissance", position: { x: 500, y: 100 }, isHovered: false },
-                { name: "The Age of Enlightenment", position: { x: 700, y: 100 }, isHovered: false },
-                { name: "Romanticism", position: { x: 300, y: 500 }, isHovered: false },
-                { name: "Modernism", position: { x: 500, y: 500 }, isHovered: false }
+                { name: "Ancient", position: { x: 100, y: 50 }, isHovered: false },
+                { name: "Medieval", position: { x: 100, y: 150 }, isHovered: false },
+                { name: "Renaissance", position: { x: 100, y: 250 }, isHovered: false },
+                { name: "The Age of Enlightenment", position: { x: 100, y: 350 }, isHovered: false },
+                { name: "Romanticism", position: { x: 100, y: 450 }, isHovered: false },
+                { name: "Modernism", position: { x: 100, y: 550 }, isHovered: false }
             ],
             artists: [],
             dragging: null,
@@ -88,8 +88,8 @@ export default {
         calculateArtistPosition(epoch) {
             const epochPosition = this.epochPositions[epoch];
             return {
-                x: epochPosition.x + (Math.random() - 0.5) * 100,
-                y: epochPosition.y + (Math.random() - 0.5) * 100
+                x: epochPosition.x + 300 + Math.random() * 400, // Распределение справа от эпох
+                y: epochPosition.y + (Math.random() - 0.5) * 100 // Случайное вертикальное расположение
             };
         },
         onMouseDown(item, type) {
