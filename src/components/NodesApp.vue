@@ -6,7 +6,7 @@
             @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
             <!-- Эпохи -->
             <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex">
-                <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 35 : 30"
+                <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 20 : 15"
                     class="epoch-circle" @mousedown="onMouseDown(epoch, 'epoch')"
                     @touchstart.prevent="onTouchStart(epoch, 'epoch')" @mouseover="onMouseOver(epoch)"
                     @mouseout="onMouseOut(epoch)" />
@@ -42,7 +42,7 @@ export default {
     data() {
         return {
             width: 800,
-            height: 600,
+            height: 1000,
             epochs: [
                 { name: "Ancient", position: { x: 100, y: 50 }, isHovered: false },
                 { name: "Medieval", position: { x: 100, y: 150 }, isHovered: false },
@@ -72,27 +72,39 @@ export default {
         },
         loadArtists() {
             const loadedArtists = [];
+            const yOffsets = {
+                "Ancient": 0,
+                "Medieval": 0,
+                "Renaissance": 0,
+                "The Age of Enlightenment": 0,
+                "Romanticism": 0,
+                "Modernism": 0
+            };
+            const yStep = 60;
+            const xOffset = 50; // Смещение по X для каждой эпохи
 
-            Object.keys(artistsData).forEach(epoch => {
+            Object.keys(artistsData).forEach((epoch, epochIndex) => {
                 ['painters', 'sculptors', 'architects'].forEach(specialization => {
                     artistsData[epoch][specialization].forEach(artist => {
+                        const position = this.calculateArtistPosition(epoch, yOffsets[epoch], epochIndex * xOffset);
                         loadedArtists.push({
                             ...artist,
                             epoch,
-                            position: this.calculateArtistPosition(epoch),
+                            position,
                             isHovered: false
                         });
+                        yOffsets[epoch] += yStep;
                     });
                 });
             });
 
             this.artists = loadedArtists;
         },
-        calculateArtistPosition(epoch) {
+        calculateArtistPosition(epoch, yOffset, xOffset) {
             const epochPosition = this.epochPositions[epoch];
             return {
-                x: epochPosition.x + 300 + Math.random() * 400, // Распределение справа от эпох
-                y: epochPosition.y + (Math.random() - 0.5) * 100 // Случайное вертикальное расположение
+                x: epochPosition.x + 300 + xOffset, // Вертикальное расположение справа от эпох с смещением по X
+                y: epochPosition.y + yOffset // Последовательное вертикальное расположение
             };
         },
         onMouseDown(item, type) {
