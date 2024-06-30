@@ -2,11 +2,13 @@
 
 <template>
     <div>
-        <svg ref="svg" :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp">
+        <svg ref="svg" :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp"
+            @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
             <!-- Эпохи -->
             <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex">
                 <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 35 : 30"
-                    class="epoch-circle" @mousedown="onMouseDown(epoch, 'epoch')" @mouseover="onMouseOver(epoch)"
+                    class="epoch-circle" @mousedown="onMouseDown(epoch, 'epoch')"
+                    @touchstart.prevent="onTouchStart(epoch, 'epoch')" @mouseover="onMouseOver(epoch)"
                     @mouseout="onMouseOut(epoch)" />
                 <text :x="epoch.position.x" :y="epoch.position.y + 45" class="epoch-text" text-anchor="middle">
                     {{ epoch.name }}
@@ -16,7 +18,8 @@
             <!-- Художники -->
             <g v-for="(artist, artistIndex) in artists" :key="artistIndex">
                 <circle :cx="artist.position.x" :cy="artist.position.y" :r="artist.isHovered ? 20 : 15"
-                    class="artist-circle" @mousedown="onMouseDown(artist, 'artist')" @mouseover="onMouseOver(artist)"
+                    class="artist-circle" @mousedown="onMouseDown(artist, 'artist')"
+                    @touchstart.prevent="onTouchStart(artist, 'artist')" @mouseover="onMouseOver(artist)"
                     @mouseout="onMouseOut(artist)" />
                 <image :x="artist.position.x - 10" :y="artist.position.y - 10" width="20" height="20"
                     :href="artist.photoURL" />
@@ -114,6 +117,24 @@ export default {
         },
         onMouseOut(item) {
             item.isHovered = false;
+        },
+        onTouchStart(item, type) {
+            this.dragging = item;
+            this.dragType = type;
+        },
+        onTouchMove(event) {
+            if (this.dragging) {
+                const svgRect = this.$refs.svg.getBoundingClientRect();
+                const touch = event.touches[0];
+                const x = touch.clientX - svgRect.left;
+                const y = touch.clientY - svgRect.top;
+                this.dragging.position.x = x;
+                this.dragging.position.y = y;
+            }
+        },
+        onTouchEnd() {
+            this.dragging = null;
+            this.dragType = null;
         }
     },
     created() {
