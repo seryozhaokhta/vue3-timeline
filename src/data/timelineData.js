@@ -63,11 +63,6 @@ export const timelineData = {
       expanded: false,
       subItems: [
         {
-          title: "Byzantium",
-          trend: "rise",
-          expanded: false,
-        },
-        {
           title: "Early Middle Ages",
           dates: "260 — 525 centuries",
           trend: "decline",

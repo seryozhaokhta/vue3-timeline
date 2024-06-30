@@ -1,0 +1,308 @@
+{
+  "Ancient": {
+    "painters": [
+      {
+        "name": "Apelles",
+        "birthPlace": "Colophon, Lydia",
+        "years": "c. 370 – 306 BCE",
+        "photoURL": "assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Zeuxis",
+        "birthPlace": "Heraclea, Magna Graecia",
+        "years": "c. 464 – 398 BCE",
+        "photoURL": "assets/images/Ancient/Zeusi.jpg"
+      },
+      {
+        "name": "Parrhasius",
+        "birthPlace": "Ephesus, Ionia",
+        "years": "c. 440 – 380 BCE",
+        "photoURL": "assets/images/Ancient/Parrhasius.png"
+      }
+    ],
+    "sculptors": [
+      {
+        "name": "Phidias",
+        "birthPlace": "Athens, Ancient Greece",
+        "years": "c. 480 – 430 BCE",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Myron",
+        "birthPlace": "Eleutherae, Attica",
+        "years": "c. 480 – 440 BCE",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Polykleitos",
+        "birthPlace": "Argos, Peloponnese",
+        "years": "c. 480 – 420 BCE",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "architects": [
+      {
+        "name": "Ictinus",
+        "birthPlace": "Athens, Ancient Greece",
+        "years": "5th century BCE",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Callicrates",
+        "birthPlace": "Athens, Ancient Greece",
+        "years": "5th century BCE",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Mnesikles",
+        "birthPlace": "Athens, Ancient Greece",
+        "years": "5th century BCE",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ]
+  },
+  "Medieval": {
+    "painters": [
+      {
+        "name": "Giotto di Bondone",
+        "birthPlace": "Vespignano, Italy",
+        "years": "1266 – 1337",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Cimabue",
+        "birthPlace": "Florence, Italy",
+        "years": "c. 1240 – 1302",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "sculptors": [
+      {
+        "name": "Nicola Pisano",
+        "birthPlace": "Apulia, Italy",
+        "years": "c. 1220 – 1284",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Arnolfo di Cambio",
+        "birthPlace": "Colle di Val d'Elsa, Italy",
+        "years": "c. 1240 – 1300/1310",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "architects": [
+      {
+        "name": "Filippo Brunelleschi",
+        "birthPlace": "Florence, Italy",
+        "years": "1377 – 1446",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Villard de Honnecourt",
+        "birthPlace": "Picardy, France",
+        "years": "13th century",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ]
+  },
+  "Renaissance": {
+    "painters": [
+      {
+        "name": "Leonardo da Vinci",
+        "birthPlace": "Anchiano, Italy",
+        "years": "1452 – 1519",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Michelangelo Buonarroti",
+        "birthPlace": "Caprese, Italy",
+        "years": "1475 – 1564",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Raphael Sanzio",
+        "birthPlace": "Urbino, Italy",
+        "years": "1483 – 1520",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "sculptors": [
+      {
+        "name": "Donatello",
+        "birthPlace": "Florence, Italy",
+        "years": "1386 – 1466",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Lorenzo Ghiberti",
+        "birthPlace": "Florence, Italy",
+        "years": "1378 – 1455",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "architects": [
+      {
+        "name": "Donato Bramante",
+        "birthPlace": "Monte Asdrualdo, Italy",
+        "years": "1444 – 1514",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Andrea Palladio",
+        "birthPlace": "Padua, Italy",
+        "years": "1508 – 1580",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ]
+  },
+  "The Age of Enlightenment": {
+    "painters": [
+      {
+        "name": "Rembrandt van Rijn",
+        "birthPlace": "Leiden, Netherlands",
+        "years": "1606 – 1669",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Peter Paul Rubens",
+        "birthPlace": "Siegen, Germany",
+        "years": "1577 – 1640",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Diego Velázquez",
+        "birthPlace": "Seville, Spain",
+        "years": "1599 – 1660",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "sculptors": [
+      {
+        "name": "Gian Lorenzo Bernini",
+        "birthPlace": "Naples, Italy",
+        "years": "1598 – 1680",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "François Girardon",
+        "birthPlace": "Troyes, France",
+        "years": "1628 – 1715",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "architects": [
+      {
+        "name": "Christopher Wren",
+        "birthPlace": "East Knoyle, England",
+        "years": "1632 – 1723",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Francesco Borromini",
+        "birthPlace": "Bissone, Switzerland",
+        "years": "1599 – 1667",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ]
+  },
+  "Romanticism": {
+    "painters": [
+      {
+        "name": "Eugène Delacroix",
+        "birthPlace": "Charenton-Saint-Maurice, France",
+        "years": "1798 – 1863",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "William Turner",
+        "birthPlace": "London, England",
+        "years": "1775 – 1851",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Caspar David Friedrich",
+        "birthPlace": "Greifswald, Germany",
+        "years": "1774 – 1840",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "sculptors": [
+      {
+        "name": "Auguste Rodin",
+        "birthPlace": "Paris, France",
+        "years": "1840 – 1917",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Antoine-Louis Barye",
+        "birthPlace": "Paris, France",
+        "years": "1796 – 1875",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "architects": [
+      {
+        "name": "Karl Friedrich Schinkel",
+        "birthPlace": "Neuruppin, Germany",
+        "years": "1781 – 1841",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Augustus Welby Pugin",
+        "birthPlace": "London, England",
+        "years": "1812 – 1852",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ]
+  },
+  "Modernism": {
+    "painters": [
+      {
+        "name": "Vincent van Gogh",
+        "birthPlace": "Zundert, Netherlands",
+        "years": "1853 – 1890",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Claude Monet",
+        "birthPlace": "Paris, France",
+        "years": "1840 – 1926",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Pablo Picasso",
+        "birthPlace": "Málaga, Spain",
+        "years": "1881 – 1973",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "sculptors": [
+      {
+        "name": "Constantin Brâncuși",
+        "birthPlace": "Hobița, Romania",
+        "years": "1876 – 1957",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Henry Moore",
+        "birthPlace": "Castleford, England",
+        "years": "1898 – 1986",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ],
+    "architects": [
+      {
+        "name": "Le Corbusier",
+        "birthPlace": "La Chaux-de-Fonds, Switzerland",
+        "years": "1887 – 1965",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      },
+      {
+        "name": "Frank Lloyd Wright",
+        "birthPlace": "Richland Center, USA",
+        "years": "1867 – 1959",
+        "photoURL": "@/assets/images/Ancient/Apelles.png"
+      }
+    ]
+  }
+}
