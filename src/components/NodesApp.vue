@@ -2,39 +2,38 @@
 
 <template>
     <div>
-        <svg :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp">
+        <svg ref="svg" :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp">
             <!-- Эпохи -->
             <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex">
-                <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 50 : 40" fill="lightgrey"
-                    @mousedown="onMouseDown(epoch, 'epoch')" @mouseover="onMouseOver(epoch)"
+                <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 35 : 30"
+                    class="epoch-circle" @mousedown="onMouseDown(epoch, 'epoch')" @mouseover="onMouseOver(epoch)"
                     @mouseout="onMouseOut(epoch)" />
-                <text :x="epoch.position.x" :y="epoch.position.y" text-anchor="middle" dominant-baseline="middle">
+                <text :x="epoch.position.x" :y="epoch.position.y + 45" class="epoch-text" text-anchor="middle">
                     {{ epoch.name }}
                 </text>
             </g>
 
             <!-- Художники -->
             <g v-for="(artist, artistIndex) in artists" :key="artistIndex">
-                <circle :cx="artist.position.x" :cy="artist.position.y" :r="artist.isHovered ? 25 : 20"
-                    fill="lightgreen" @mousedown="onMouseDown(artist, 'artist')" @mouseover="onMouseOver(artist)"
+                <circle :cx="artist.position.x" :cy="artist.position.y" :r="artist.isHovered ? 20 : 15"
+                    class="artist-circle" @mousedown="onMouseDown(artist, 'artist')" @mouseover="onMouseOver(artist)"
                     @mouseout="onMouseOut(artist)" />
-                <text :x="artist.position.x" :y="artist.position.y + 30" text-anchor="middle"
-                    dominant-baseline="middle">
+                <image :x="artist.position.x - 10" :y="artist.position.y - 10" width="20" height="20"
+                    :href="artist.photoURL" />
+                <text :x="artist.position.x" :y="artist.position.y + 35" class="artist-text" text-anchor="middle">
                     {{ artist.name }}
                 </text>
-                <image :x="artist.position.x - 15" :y="artist.position.y - 15" width="30" height="30"
-                    :href="artist.photoURL" />
             </g>
 
             <!-- Кривые Безье -->
             <path v-for="(artist, artistIndex) in artists" :key="'path-' + artistIndex"
-                :d="drawBezier(epochPositions[artist.epoch], artist.position)" stroke="black" fill="transparent" />
+                :d="drawBezier(epochPositions[artist.epoch], artist.position)" class="bezier-path" />
         </svg>
     </div>
 </template>
 
 <script>
-import artistsData from '@/data/artists-by-specialization-and-period-english.json'; // Подключаем JSON-файл с данными художников
+import artistsData from '@/data/artists-by-specialization-and-period-english.json';
 
 export default {
     data() {
@@ -56,11 +55,10 @@ export default {
     },
     computed: {
         epochPositions() {
-            let positions = {};
-            this.epochs.forEach((epoch) => {
+            return this.epochs.reduce((positions, epoch) => {
                 positions[epoch.name] = epoch.position;
-            });
-            return positions;
+                return positions;
+            }, {});
         }
     },
     methods: {
@@ -88,7 +86,6 @@ export default {
             this.artists = loadedArtists;
         },
         calculateArtistPosition(epoch) {
-            // Задаем произвольное положение для художника в пределах соответствующей эпохи
             const epochPosition = this.epochPositions[epoch];
             return {
                 x: epochPosition.x + (Math.random() - 0.5) * 100,
@@ -101,7 +98,7 @@ export default {
         },
         onMouseMove(event) {
             if (this.dragging) {
-                const svgRect = event.target.closest('svg').getBoundingClientRect();
+                const svgRect = this.$refs.svg.getBoundingClientRect();
                 const x = event.clientX - svgRect.left;
                 const y = event.clientY - svgRect.top;
                 this.dragging.position.x = x;
@@ -120,18 +117,51 @@ export default {
         }
     },
     created() {
-        this.loadArtists(); // Загружаем художников при создании компонента
+        this.loadArtists();
     }
 };
 </script>
 
 <style scoped>
 svg {
-    border: 1px solid black;
+    border: 1px solid #ccc;
     user-select: none;
+    background-color: #f9f9f9;
 }
 
-circle {
-    transition: r 0.3s ease;
+.epoch-circle {
+    transition: r 0.3s ease, fill 0.3s ease;
+    fill: #b0bec5;
+}
+
+.epoch-circle:hover {
+    fill: #78909c;
+}
+
+.epoch-text {
+    fill: #333;
+    font-size: 14px;
+    font-family: "Helvetica Neue", sans-serif;
+}
+
+.artist-circle {
+    transition: r 0.3s ease, fill 0.3s ease;
+    fill: #81c784;
+}
+
+.artist-circle:hover {
+    fill: #66bb6a;
+}
+
+.artist-text {
+    fill: #333;
+    font-size: 12px;
+    font-family: "Helvetica Neue", sans-serif;
+}
+
+.bezier-path {
+    stroke: #78909c;
+    stroke-width: 2;
+    fill: transparent;
 }
 </style>
