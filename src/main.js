@@ -13,4 +13,4 @@ app.use(vuetify);
 app.mount("#app");
 
 // Инициализируем AOS после того, как приложение будет смонтировано
-app.AOS = new AOS.init(); // Инициализируем AOS как свойство Vue приложения для SSR
+app.AOS = new AOS.init();
