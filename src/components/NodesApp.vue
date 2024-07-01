@@ -55,8 +55,8 @@ import artistsData from "@/data/artists-by-specialization-and-period-english.jso
 export default {
     data() {
         return {
-            width: 800,
-            height: 1000,
+            width: 1000,
+            height: 1200,
             epochs: [
                 { name: "Ancient", position: { x: 100, y: 50 }, isHovered: false },
                 { name: "Medieval", position: { x: 100, y: 150 }, isHovered: false },
@@ -104,7 +104,7 @@ export default {
                 Modernism: 0,
             };
             const yStep = 60;
-            const xOffset = 50; // Смещение по X для каждой эпохи
+            const xOffset = 90; // Смещение по X для каждой эпохи
 
             Object.keys(artistsData).forEach((epoch, epochIndex) => {
                 ["painters", "sculptors", "architects"].forEach((specialization) => {
