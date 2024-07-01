@@ -4,6 +4,12 @@
     <div>
         <svg ref="svg" :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp"
             @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
+            <!-- Кривые Безье -->
+            <path v-for="(artist, artistIndex) in artists" :key="'path-' + artistIndex"
+                :d="drawBezier(epochPositions[artist.epoch], artist.position)" class="bezier-path" :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
+                    ? 1
+                    : 0.16
+                    " />
             <!-- Эпохи -->
             <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex">
                 <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 20 : 15"
@@ -23,29 +29,22 @@
                     class="artist-circle" @mousedown="onMouseDown(artist, 'artist')"
                     @touchstart.prevent="onTouchStart(artist, 'artist')" @mouseover="onMouseOver(artist)"
                     @mouseout="onMouseOut(artist)" :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                            ? 1
-                            : 0.16
+                        ? 1
+                        : 0.16
                         " />
                 <image :x="artist.position.x - 10" :y="artist.position.y - 10" width="20" height="20"
                     :href="artist.photoURL" :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                            ? 1
-                            : 0.16
+                        ? 1
+                        : 0.16
                         " />
                 <text :x="artist.position.x" :y="artist.position.y + 35" class="artist-text" text-anchor="middle"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                            ? 1
-                            : 0.16
+                        ? 1
+                        : 0.16
                         ">
                     {{ artist.name }}
                 </text>
             </g>
-
-            <!-- Кривые Безье -->
-            <path v-for="(artist, artistIndex) in artists" :key="'path-' + artistIndex"
-                :d="drawBezier(epochPositions[artist.epoch], artist.position)" class="bezier-path" :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                        ? 1
-                        : 0.16
-                    " />
         </svg>
     </div>
 </template>
@@ -237,7 +236,9 @@ svg {
 
 .bezier-path {
     stroke: #78909c;
-    stroke-width: 2;
+    stroke-width: 1;
     fill: transparent;
+    pointer-events: none;
+    /* Игнорируем события мыши для кривых Безье */
 }
 </style>
