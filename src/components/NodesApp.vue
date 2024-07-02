@@ -4,44 +4,36 @@
     <div>
         <svg ref="svg" :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp"
             @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
-            <!-- Кривые Безье -->
+            <!-- Bezier Paths -->
             <path v-for="(artist, artistIndex) in artists" :key="'path-' + artistIndex"
-                :d="drawBezier(epochPositions[artist.epoch], artist.position)" class="bezier-path" :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                    ? 1
-                    : 0.16
-                    " />
-            <!-- Эпохи -->
+                :d="drawBezier(epochPositions[artist.epoch], artist.position)" class="bezier-path"
+                :style="bezierPathStyle"
+                :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
+            <!-- Epochs -->
             <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex">
                 <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 20 : 15"
-                    class="epoch-circle" @mousedown="onMouseDown(epoch, 'epoch')"
+                    class="epoch-circle" :style="epochCircleStyle" @mousedown="onMouseDown(epoch, 'epoch')"
                     @touchstart.prevent="onTouchStart(epoch, 'epoch')"
                     :opacity="epoch.isHovered || isHoveringEpoch === null ? 1 : 0.16" />
                 <text :x="epoch.position.x" :y="epoch.position.y + 45" class="epoch-text" text-anchor="middle"
-                    @mouseover="onEpochMouseOver(epoch)" @mouseout="onEpochMouseOut(epoch)"
+                    :style="epochTextStyle" @mouseover="onEpochMouseOver(epoch)" @mouseout="onEpochMouseOut(epoch)"
                     :opacity="epoch.isHovered || isHoveringEpoch === null ? 1 : 0.16">
                     {{ epoch.name }}
                 </text>
             </g>
-
-            <!-- Художники -->
+            <!-- Artists -->
             <g v-for="(artist, artistIndex) in artists" :key="artistIndex">
                 <circle :cx="artist.position.x" :cy="artist.position.y" :r="artist.isHovered ? 20 : 15"
-                    class="artist-circle" @mousedown="onMouseDown(artist, 'artist')"
+                    class="artist-circle" :style="artistCircleStyle" @mousedown="onMouseDown(artist, 'artist')"
                     @touchstart.prevent="onTouchStart(artist, 'artist')" @mouseover="onMouseOver(artist)"
-                    @mouseout="onMouseOut(artist)" :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                        ? 1
-                        : 0.16
-                        " />
+                    @mouseout="onMouseOut(artist)"
+                    :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
                 <image :x="artist.position.x - 10" :y="artist.position.y - 10" width="20" height="20"
-                    :href="artist.photoURL" :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                        ? 1
-                        : 0.16
-                        " />
+                    :href="artist.photoURL"
+                    :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
                 <text :x="artist.position.x" :y="artist.position.y + 35" class="artist-text" text-anchor="middle"
-                    :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null
-                        ? 1
-                        : 0.16
-                        ">
+                    :style="artistTextStyle"
+                    :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16">
                     {{ artist.name }}
                 </text>
             </g>
@@ -60,16 +52,8 @@ export default {
             epochs: [
                 { name: "Ancient", position: { x: 100, y: 50 }, isHovered: false },
                 { name: "Medieval", position: { x: 100, y: 150 }, isHovered: false },
-                {
-                    name: "Renaissance",
-                    position: { x: 100, y: 250 },
-                    isHovered: false,
-                },
-                {
-                    name: "The Age of Enlightenment",
-                    position: { x: 100, y: 350 },
-                    isHovered: false,
-                },
+                { name: "Renaissance", position: { x: 100, y: 250 }, isHovered: false },
+                { name: "The Age of Enlightenment", position: { x: 100, y: 350 }, isHovered: false },
                 { name: "Romanticism", position: { x: 100, y: 450 }, isHovered: false },
                 { name: "Modernism", position: { x: 100, y: 550 }, isHovered: false },
             ],
@@ -85,6 +69,31 @@ export default {
                 positions[epoch.name] = epoch.position;
                 return positions;
             }, {});
+        },
+        bezierPathStyle() {
+            return {
+                stroke: this.$vuetify.theme.global.current.colors.path,
+            };
+        },
+        epochCircleStyle() {
+            return {
+                fill: this.$vuetify.theme.global.current.colors.epoch,
+            };
+        },
+        artistCircleStyle() {
+            return {
+                fill: this.$vuetify.theme.global.current.colors.node,
+            };
+        },
+        epochTextStyle() {
+            return {
+                fill: this.$vuetify.theme.global.current.variables.text,
+            };
+        },
+        artistTextStyle() {
+            return {
+                fill: this.$vuetify.theme.global.current.variables.text,
+            };
         },
     },
     methods: {
@@ -104,16 +113,12 @@ export default {
                 Modernism: 0,
             };
             const yStep = 60;
-            const xOffset = 90; // Смещение по X для каждой эпохи
+            const xOffset = 90; // Offset for each epoch
 
             Object.keys(artistsData).forEach((epoch, epochIndex) => {
                 ["painters", "sculptors", "architects"].forEach((specialization) => {
                     artistsData[epoch][specialization].forEach((artist) => {
-                        const position = this.calculateArtistPosition(
-                            epoch,
-                            yOffsets[epoch],
-                            epochIndex * xOffset
-                        );
+                        const position = this.calculateArtistPosition(epoch, yOffsets[epoch], epochIndex * xOffset);
                         loadedArtists.push({
                             ...artist,
                             epoch,
@@ -130,8 +135,8 @@ export default {
         calculateArtistPosition(epoch, yOffset, xOffset) {
             const epochPosition = this.epochPositions[epoch];
             return {
-                x: epochPosition.x + 300 + xOffset, // Вертикальное расположение справа от эпох с смещением по X
-                y: epochPosition.y + yOffset, // Последовательное вертикальное расположение
+                x: epochPosition.x + 300 + xOffset, // Position horizontally right from epochs with x offset
+                y: epochPosition.y + yOffset, // Sequential vertical positioning
             };
         },
         onMouseDown(item, type) {
@@ -164,13 +169,14 @@ export default {
             } else {
                 item.isHovered = false;
             }
-        }, onEpochMouseOver(epoch) {
-            this.isHoveringEpoch = epoch.name;
+        },
+        onEpochMouseOver(epoch) {
             epoch.isHovered = true;
+            this.isHoveringEpoch = epoch.name;
         },
         onEpochMouseOut(epoch) {
-            this.isHoveringEpoch = null;
             epoch.isHovered = false;
+            this.isHoveringEpoch = null;
         },
         onTouchStart(item, type) {
             this.dragging = item;
@@ -179,9 +185,8 @@ export default {
         onTouchMove(event) {
             if (this.dragging) {
                 const svgRect = this.$refs.svg.getBoundingClientRect();
-                const touch = event.touches[0];
-                const x = touch.clientX - svgRect.left;
-                const y = touch.clientY - svgRect.top;
+                const x = event.touches[0].clientX - svgRect.left;
+                const y = event.touches[0].clientY - svgRect.top;
                 this.dragging.position.x = x;
                 this.dragging.position.y = y;
             }
@@ -191,7 +196,7 @@ export default {
             this.dragType = null;
         },
     },
-    created() {
+    mounted() {
         this.loadArtists();
     },
 };
@@ -201,35 +206,26 @@ export default {
 svg {
     border: 1px solid #ccc;
     user-select: none;
-    background-color: #f9f9f9;
 }
 
 .epoch-circle {
     transition: r 0.3s ease, fill 0.3s ease;
-    fill: #b0bec5;
 }
 
-.epoch-circle:hover {
-    fill: #78909c;
-}
+.epoch-circle:hover {}
 
 .epoch-text {
-    fill: #333;
     font-size: 14px;
     font-family: "Helvetica Neue", sans-serif;
 }
 
 .artist-circle {
     transition: r 0.3s ease, fill 0.3s ease;
-    fill: #81c784;
 }
 
-.artist-circle:hover {
-    fill: #66bb6a;
-}
+.artist-circle:hover {}
 
 .artist-text {
-    fill: #333;
     font-size: 12px;
     font-family: "Helvetica Neue", sans-serif;
 }
@@ -242,3 +238,4 @@ svg {
     /* Игнорируем события мыши для кривых Безье */
 }
 </style>
+

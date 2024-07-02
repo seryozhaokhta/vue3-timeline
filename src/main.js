@@ -1,4 +1,5 @@
 // src/main.js
+
 import { createApp } from "vue";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
@@ -14,3 +15,4 @@ app.mount("#app");
 
 // Инициализируем AOS после того, как приложение будет смонтировано
 app.AOS = new AOS.init();
+

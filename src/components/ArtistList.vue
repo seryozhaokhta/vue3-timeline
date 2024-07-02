@@ -51,6 +51,42 @@ export default {
         const epochs = ref(timelineData["Western-European-art-periodization"].map(item => item.epoch));
         const selectedEpoch = ref('');
 
+        const filterByEpoch = (epoch) => {
+            if (selectedEpoch.value === epoch) {
+                selectedEpoch.value = '';
+            } else {
+                selectedEpoch.value = epoch;
+            }
+        };
+
+        const filterArtistsByQuery = (filtered) => {
+            const query = searchQuery.value.toLowerCase();
+            const searchFiltered = {};
+
+            Object.entries(filtered).forEach(([period, specializations]) => {
+                const filteredSpecializations = {};
+
+                Object.entries(specializations).forEach(([specialization, artists]) => {
+                    const filteredArtists = artists.filter(artist =>
+                        artist.name.toLowerCase().includes(query) ||
+                        artist.birthPlace.toLowerCase().includes(query) ||
+                        period.toLowerCase().includes(query) ||
+                        specialization.toLowerCase().includes(query)
+                    );
+
+                    if (filteredArtists.length) {
+                        filteredSpecializations[specialization] = filteredArtists;
+                    }
+                });
+
+                if (Object.keys(filteredSpecializations).length) {
+                    searchFiltered[period] = filteredSpecializations;
+                }
+            });
+
+            return searchFiltered;
+        };
+
         const filteredArtists = computed(() => {
             let filtered = artistsData.value;
 
@@ -59,31 +95,7 @@ export default {
             }
 
             if (searchQuery.value.trim()) {
-                const query = searchQuery.value.toLowerCase();
-                const searchFiltered = {};
-
-                Object.entries(filtered).forEach(([period, specializations]) => {
-                    const filteredSpecializations = {};
-
-                    Object.entries(specializations).forEach(([specialization, artists]) => {
-                        const filteredArtists = artists.filter(artist =>
-                            artist.name.toLowerCase().includes(query) ||
-                            artist.birthPlace.toLowerCase().includes(query) ||
-                            period.toLowerCase().includes(query) ||
-                            specialization.toLowerCase().includes(query)
-                        );
-
-                        if (filteredArtists.length) {
-                            filteredSpecializations[specialization] = filteredArtists;
-                        }
-                    });
-
-                    if (Object.keys(filteredSpecializations).length) {
-                        searchFiltered[period] = filteredSpecializations;
-                    }
-                });
-
-                filtered = searchFiltered;
+                filtered = filterArtistsByQuery(filtered);
             }
 
             return filtered;
@@ -101,14 +113,6 @@ export default {
             }
         };
 
-        const filterByEpoch = (epoch) => {
-            if (selectedEpoch.value === epoch) {
-                selectedEpoch.value = '';
-            } else {
-                selectedEpoch.value = epoch;
-            }
-        };
-
         return {
             searchQuery,
             filteredArtists,
@@ -118,6 +122,7 @@ export default {
             filterByEpoch
         };
     }
+
 };
 </script>
 
@@ -125,7 +130,7 @@ export default {
 h1,
 h2,
 h3 {
-    color: #333;
+    color: var(--text);
     margin: 20px 0 10px;
 }
 
@@ -164,7 +169,7 @@ h3 {
 .artist-card {
     padding: 20px;
     text-align: center;
-    background-color: #f5f5f5;
+    background-color: var(--cardBackground);
     border-radius: 8px;
     transition: transform 0.3s, box-shadow 0.3s;
 }
