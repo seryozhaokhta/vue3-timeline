@@ -212,7 +212,7 @@ svg {
     transition: r 0.3s ease, fill 0.3s ease;
 }
 
-.epoch-circle:hover {}
+/* .epoch-circle:hover {} */
 
 .epoch-text {
     font-size: 14px;
@@ -223,7 +223,7 @@ svg {
     transition: r 0.3s ease, fill 0.3s ease;
 }
 
-.artist-circle:hover {}
+/* .artist-circle:hover {} */
 
 .artist-text {
     font-size: 12px;
@@ -231,7 +231,6 @@ svg {
 }
 
 .bezier-path {
-    stroke: #78909c;
     stroke-width: 1;
     fill: transparent;
     pointer-events: none;
