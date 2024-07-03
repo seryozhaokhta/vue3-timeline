@@ -1,5 +1,5 @@
 <!-- src/components/NodesApp.vue -->
-
+ 
 <template>
     <div>
         <!-- Interaction Panel -->
@@ -33,7 +33,8 @@
             <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex">
                 <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 20 : 15"
                     class="epoch-circle" :style="epochCircleStyle" @mousedown="onMouseDown(epoch, 'epoch')"
-                    @touchstart.prevent="onTouchStart(epoch, 'epoch')" :opacity="isEpochVisible(epoch) ? 1 : 0.16" />
+                    @dblclick="onEpochDoubleClick(epoch)" @touchstart.prevent="onTouchStart(epoch, 'epoch')"
+                    @touchend="onEpochTouchEnd(epoch)" :opacity="isEpochVisible(epoch) ? 1 : 0.16" />
                 <text :x="epoch.position.x" :y="epoch.position.y + 45" class="epoch-text" text-anchor="middle"
                     :style="epochTextStyle" @mouseover="onEpochMouseOver(epoch)" @mouseout="onEpochMouseOut(epoch)"
                     :opacity="isEpochVisible(epoch) ? 1 : 0.16">
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useTheme } from 'vuetify';
 import artistsData from "@/data/artists-by-specialization-and-period-english.json";
 
@@ -69,8 +70,8 @@ export default {
     setup() {
         const theme = useTheme();
 
-        const width = 1000;
-        const height = 1200;
+        const width = ref(window.innerWidth > 768 ? 1000 : window.innerWidth * 0.9);
+        const height = ref(window.innerWidth > 768 ? 1200 : window.innerHeight * 0.9);
         const epochs = ref([
             { name: "Ancient", position: { x: 100, y: 50 }, isHovered: false },
             { name: "Medieval", position: { x: 100, y: 150 }, isHovered: false },
@@ -87,6 +88,7 @@ export default {
         const selectedEpoch = ref('All');
         const selectedSpecialization = ref('');
         const specializations = ref(['painters', 'sculptors', 'architects']);
+        const lastTap = ref(null);
 
         const epochNames = computed(() => epochs.value.map(epoch => epoch.name));
         const epochPositions = computed(() => {
@@ -142,7 +144,7 @@ export default {
                 Modernism: 0,
             };
             const yStep = 60;
-            const xOffset = 90; // Offset for each epoch
+            const xOffset = window.innerWidth > 768 ? 90 : 45; // Offset for each epoch
 
             Object.keys(artistsData).forEach((epoch, epochIndex) => {
                 ["painters", "sculptors", "architects"].forEach((specialization) => {
@@ -247,8 +249,43 @@ export default {
             return selectedEpoch.value === 'All' || !selectedEpoch.value || epoch.name === selectedEpoch.value;
         };
 
+        const handleResize = () => {
+            width.value = window.innerWidth > 768 ? 1000 : window.innerWidth * 0.9;
+            height.value = window.innerWidth > 768 ? 1200 : window.innerHeight * 0.9;
+            loadArtists(); // Reload artists with new xOffset
+        };
+
+        const onEpochDoubleClick = (epoch) => {
+            // Move artists closer to the double-clicked epoch
+            const xOffset = 100; // Adjust the x offset as needed
+            const yOffsetIncrement = 40; // Adjust the y offset increment as needed
+            let yOffset = 0;
+
+            artists.value.forEach((artist) => {
+                if (artist.epoch === epoch.name) {
+                    artist.position.x = epoch.position.x + xOffset;
+                    artist.position.y = epoch.position.y + yOffset;
+                    yOffset += yOffsetIncrement;
+                }
+            });
+        };
+
+        const onEpochTouchEnd = (epoch) => {
+            const now = new Date().getTime();
+            const timesince = now - lastTap.value;
+            if ((timesince < 600) && (timesince > 0)) {
+                onEpochDoubleClick(epoch);
+            }
+            lastTap.value = new Date().getTime();
+        };
+
         onMounted(() => {
             loadArtists();
+            window.addEventListener('resize', handleResize);
+        });
+
+        onBeforeUnmount(() => {
+            window.removeEventListener('resize', handleResize);
         });
 
         return {
@@ -285,7 +322,9 @@ export default {
             onTouchMove,
             onTouchEnd,
             resetFilters,
-            isEpochVisible
+            isEpochVisible,
+            onEpochDoubleClick,
+            onEpochTouchEnd,
         };
     },
 };
@@ -325,3 +364,4 @@ svg {
     pointer-events: none;
 }
 </style>
+
