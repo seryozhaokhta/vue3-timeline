@@ -1,18 +1,18 @@
 <!-- src/components/MapApp.vue -->
-
+ 
 <template>
     <v-container>
         <v-row>
             <v-col>
-                <div class="map-container" @wheel="handleWheel" @mousedown="startPan" @mousemove="panMap"
-                    @mouseup="endPan" @mouseleave="endPan">
+                <div class="map-container" ref="mapContainer" @wheel="handleWheel" @mousedown="startPan"
+                    @mousemove="panMap" @mouseup="endPan" @mouseleave="endPan">
                     <v-img ref="mapImage" :src="require('@/assets/map/World_map_blank_without_borders.svg')"
                         aspect-ratio="16/9" @load="handleImageLoad" @mousemove="handleMouseMove"
                         @mouseleave="resetTooltip" class="map-image" :style="mapStyle">
                         <!-- Display points on the map -->
-                        <template v-for="point in visiblePoints" :key="point.id">
-                            <div class="map-point"
-                                :style="{ left: point.x + 'px', top: point.y + 'px', transform: `translate(-50%, -50%) scale(${1 / zoomScale})` }">
+                        <template v-if="isMapReady">
+                            <div v-for="point in visiblePoints" :key="point.id" class="map-point"
+                                :style="getPointStyle(point)">
                                 <span class="map-point-label">{{ point.name }}</span>
                             </div>
                         </template>
@@ -58,6 +58,7 @@ export default {
             progress: 0,
             viewportScale: 1,
             imageLoaded: false,
+            isMapReady: false,
             zoomScale: 1,
             zoomStep: 0.1,
             minZoom: 1,
@@ -65,6 +66,7 @@ export default {
             mapPosition: { x: 0, y: 0 },
             isPanning: false,
             startPanPosition: { x: 0, y: 0 },
+            mapDimensions: { width: 0, height: 0 },
         };
     },
     computed: {
@@ -75,6 +77,7 @@ export default {
             };
         },
         visiblePoints() {
+            if (!this.isMapReady) return [];
             const numPointsToShow = Math.floor(this.sortedPoints.length * (this.progress / 100));
             return this.sortedPoints.slice(0, numPointsToShow);
         },
@@ -82,9 +85,23 @@ export default {
     methods: {
         handleImageLoad() {
             this.imageLoaded = true;
+            this.$nextTick(() => {
+                this.initializeMap();
+            });
+        },
+        initializeMap() {
+            this.updateMapDimensions();
+            if (this.mapDimensions.width > 0 && this.mapDimensions.height > 0) {
+                this.isMapReady = true;
+            } else {
+                // If dimensions are not set, try again after a short delay
+                setTimeout(() => {
+                    this.initializeMap();
+                }, 100);
+            }
         },
         handleMouseMove(event) {
-            if (!this.imageLoaded) return;
+            if (!this.isMapReady) return;
             const x = event.offsetX / this.zoomScale;
             const y = event.offsetY / this.zoomScale;
             console.log(`Mouse coordinates: x=${x}, y=${y}`);
@@ -118,16 +135,16 @@ export default {
             const step = 20;
             switch (direction) {
                 case 'up':
-                    this.mapPosition.y -= step;
-                    break;
-                case 'down':
                     this.mapPosition.y += step;
                     break;
+                case 'down':
+                    this.mapPosition.y -= step;
+                    break;
                 case 'left':
-                    this.mapPosition.x -= step;
+                    this.mapPosition.x += step;
                     break;
                 case 'right':
-                    this.mapPosition.x += step;
+                    this.mapPosition.x -= step;
                     break;
             }
         },
@@ -146,12 +163,33 @@ export default {
         endPan() {
             this.isPanning = false;
         },
+        getPointStyle(point) {
+            const x = (point.x / 100) * this.mapDimensions.width;
+            const y = (point.y / 100) * this.mapDimensions.height;
+            return {
+                left: `${x}px`,
+                top: `${y}px`,
+                transform: `translate(-50%, -50%) scale(${1 / this.zoomScale})`,
+            };
+        },
+        updateMapDimensions() {
+            if (this.$refs.mapImage && this.$refs.mapImage.$el) {
+                const { width, height } = this.$refs.mapImage.$el.getBoundingClientRect();
+                this.mapDimensions = { width, height };
+            }
+        },
     },
     created() {
         this.mapPoints = mapPointsData;
         this.sortedPoints = [...this.mapPoints].sort((a, b) => {
             return new Date(a.founded).getTime() - new Date(b.founded).getTime();
         });
+    },
+    mounted() {
+        window.addEventListener('resize', this.initializeMap);
+    },
+    beforeUnmount() {
+        window.removeEventListener('resize', this.initializeMap);
     },
 };
 </script>
@@ -178,7 +216,6 @@ export default {
     height: 10px;
     background-color: #ff9800;
     border-radius: 50%;
-    transform: translate(-50%, -50%);
     cursor: pointer;
     z-index: 1000;
 }
@@ -189,6 +226,7 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     font-size: 12px;
+    white-space: nowrap;
 }
 
 .toolbar {
