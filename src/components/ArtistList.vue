@@ -194,10 +194,18 @@ h3 {
     display: flex;
     gap: 10px;
     margin: 20px 0;
+    flex-wrap: wrap;
 }
 
 .active-button {
     background-color: #1976d2 !important;
     color: #fff !important;
+}
+
+/* Добавление отступа сверху, чтобы контент не накладывался на хедер */
+@media (max-width: 960px) {
+    section {
+        padding-top: 64px;
+    }
 }
 </style>

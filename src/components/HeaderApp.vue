@@ -1,7 +1,7 @@
 <!-- src/components/HeaderApp.vue -->
 
 <template>
-    <v-app-bar app>
+    <v-app-bar app fixed>
         <v-toolbar-title>Art Theory App</v-toolbar-title>
         <v-spacer></v-spacer>
 
@@ -20,18 +20,13 @@
         <!-- Mobile Menu Toggle Button -->
         <div class="d-flex d-md-none">
             <v-btn icon @click="menuOpen = !menuOpen">
-                <v-icon>mdi-menu</v-icon>
+                <v-icon>{{ menuOpen ? 'mdi-close' : 'mdi-menu' }}</v-icon>
             </v-btn>
         </div>
     </v-app-bar>
 
     <!-- Mobile Menu -->
-    <v-menu v-model="menuOpen" bottom left>
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-menu</v-icon>
-            </v-btn>
-        </template>
+    <v-navigation-drawer v-model="menuOpen" temporary right overlay>
         <v-list>
             <v-list-item :to="{ name: 'HomePage' }">Home</v-list-item>
             <v-list-item :to="{ name: 'ArtistList' }">Artists List</v-list-item>
@@ -42,7 +37,7 @@
                 {{ $vuetify.theme.global.name === 'dark' ? '🌙' : '☀️' }}
             </v-list-item>
         </v-list>
-    </v-menu>
+    </v-navigation-drawer>
 </template>
 
 <script>
@@ -68,4 +63,26 @@ export default {
 }
 
 /* Дополнительные стили для адаптивности и внешнего вида могут быть добавлены здесь */
+.v-app-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.v-navigation-drawer {
+    z-index: 2000;
+}
+
+/* Обеспечиваем, чтобы контент не перекрывался хедером на мобильных устройствах */
+@media (max-width: 960px) {
+    .v-application--wrap {
+        padding-top: 64px;
+    }
+}
+
+/* Стили для видимости иконки меню */
+.v-icon {
+    font-size: 24px;
+}
 </style>

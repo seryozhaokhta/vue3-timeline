@@ -91,6 +91,11 @@ export default {
 <style scoped>
 .sub-item-content {
     margin-left: 0;
+    padding: 10px 20px;
+    background-color: var(--cardBackground);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
 .styled-button {
@@ -119,5 +124,12 @@ export default {
 
 .v-list::-webkit-scrollbar {
     display: none;
+}
+
+/* Добавление отступа сверху, чтобы контент не накладывался на хедер */
+@media (max-width: 960px) {
+    .sub-item-content {
+        margin-top: 64px;
+    }
 }
 </style>

@@ -7,6 +7,7 @@ import router from "./router";
 import "vuetify/styles";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import "@mdi/font/css/materialdesignicons.css";
 
 const app = createApp(App);
 
@@ -17,4 +18,3 @@ app.mount("#app");
 
 // Инициализируем AOS после того, как приложение будет смонтировано
 app.AOS = new AOS.init();
-
