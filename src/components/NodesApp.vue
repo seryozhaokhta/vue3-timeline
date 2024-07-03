@@ -10,8 +10,8 @@
                         clearable></v-select>
                 </v-col>
                 <v-col cols="12" md="3">
-                    <v-select v-model="selectedSpecialization" :items="specializations" label="Select Specialization"
-                        clearable></v-select>
+                    <v-select v-model="selectedSpecialization" :items="['All', ...specializations]"
+                        label="Select Specialization" clearable></v-select>
                 </v-col>
                 <v-col cols="12" md="3">
                     <v-text-field v-model="searchQuery" label="Search Artists"></v-text-field>
@@ -119,7 +119,7 @@ export default {
         const filteredArtists = computed(() => {
             return artists.value.filter(artist => {
                 const matchesEpoch = selectedEpoch.value === 'All' || !selectedEpoch.value ? true : artist.epoch === selectedEpoch.value;
-                const matchesSpecialization = selectedSpecialization.value ? artist.specialization === selectedSpecialization.value : true;
+                const matchesSpecialization = selectedSpecialization.value === 'All' || !selectedSpecialization.value ? true : artist.specialization === selectedSpecialization.value;
                 const matchesSearchQuery = artist.name.toLowerCase().includes(searchQuery.value.toLowerCase());
                 return matchesEpoch && matchesSpecialization && matchesSearchQuery;
             });
