@@ -1,9 +1,9 @@
 <!-- src/components/HomePage.vue -->
 
 <template>
-    <v-container>
-        <v-row justify="center">
-            <v-col cols="12" md="8">
+    <v-container fluid>
+        <v-row justify="center" class="full-height">
+            <v-col cols="12" class="content-wrapper">
                 <h1 class="main-title">Welcome to the Art Theory App</h1>
                 <p class="intro-text">This app is designed to help you study art theory.</p>
                 <image-slider></image-slider>
@@ -30,23 +30,36 @@ export default {
 .main-title {
     text-align: center;
     margin-top: 20px;
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: bold;
 }
 
 .intro-text {
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.5em;
     margin-bottom: 20px;
 }
 
 .additional-info {
     text-align: center;
-    font-size: 1em;
+    font-size: 1.2em;
     margin-top: 20px;
 }
 
-/* Добавление отступа сверху, чтобы контент не накладывался на хедер */
+.full-height {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-wrapper {
+    padding-top: 80px;
+    /* добавляем отступ сверху */
+}
+
+/* Добавление отступа сверху для мобильных устройств */
 @media (max-width: 960px) {
 
     .main-title,

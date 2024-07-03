@@ -88,5 +88,103 @@
     "founded": "c. 800 BCE"
   },
   { "id": 23, "name": "Syracuse", "x": 52, "y": 37.5, "founded": "733 BCE" },
-  { "id": 24, "name": "Taranto", "x": 52.5, "y": 36.5, "founded": "706 BCE" }
+  { "id": 24, "name": "Taranto", "x": 52.5, "y": 36.5, "founded": "706 BCE" },
+  { "id": 25, "name": "Athens", "x": 54, "y": 35.5, "founded": "c. 3000 BCE" },
+  {
+    "id": 26,
+    "name": "Sparta",
+    "x": 53.5,
+    "y": 35.2,
+    "founded": "c. 1000 BCE"
+  },
+  { "id": 27, "name": "Corinth", "x": 54, "y": 35.6, "founded": "c. 900 BCE" },
+  {
+    "id": 28,
+    "name": "Thebes",
+    "x": 54.3,
+    "y": 35.8,
+    "founded": "c. 1400 BCE"
+  },
+  { "id": 29, "name": "Babylon", "x": 58, "y": 37, "founded": "c. 1894 BCE" },
+  { "id": 30, "name": "Ur", "x": 58.5, "y": 39.5, "founded": "c. 3800 BCE" },
+  {
+    "id": 31,
+    "name": "Nineveh",
+    "x": 58.8,
+    "y": 37.5,
+    "founded": "c. 6000 BCE"
+  },
+  {
+    "id": 32,
+    "name": "Jerusalem",
+    "x": 57,
+    "y": 37.5,
+    "founded": "c. 3000 BCE"
+  },
+  {
+    "id": 33,
+    "name": "Byblos",
+    "x": 56.5,
+    "y": 37.6,
+    "founded": "c. 5000 BCE"
+  },
+  { "id": 34, "name": "Sidon", "x": 56.5, "y": 37.7, "founded": "c. 4000 BCE" },
+  { "id": 35, "name": "Tyre", "x": 56.7, "y": 37.8, "founded": "c. 2750 BCE" },
+  { "id": 36, "name": "Memphis", "x": 54, "y": 42.2, "founded": "c. 3100 BCE" },
+  {
+    "id": 37,
+    "name": "Thebes (Egypt)",
+    "x": 54.2,
+    "y": 42.5,
+    "founded": "c. 3200 BCE"
+  },
+  {
+    "id": 38,
+    "name": "Ctesiphon",
+    "x": 58.3,
+    "y": 37.1,
+    "founded": "c. 120 BCE"
+  },
+  {
+    "id": 39,
+    "name": "Seleucia",
+    "x": 58.5,
+    "y": 37.2,
+    "founded": "c. 305 BCE"
+  },
+  { "id": 40, "name": "Antioch", "x": 57, "y": 36.8, "founded": "c. 300 BCE" },
+  {
+    "id": 41,
+    "name": "Alexandria",
+    "x": 55.5,
+    "y": 42,
+    "founded": "c. 331 BCE"
+  },
+  {
+    "id": 42,
+    "name": "Damascus",
+    "x": 56.2,
+    "y": 37.5,
+    "founded": "c. 3000 BCE"
+  },
+  { "id": 43, "name": "Jericho", "x": 57, "y": 37.2, "founded": "c. 9600 BCE" },
+  { "id": 44, "name": "Uruk", "x": 58.7, "y": 38.5, "founded": "c. 4000 BCE" },
+  { "id": 45, "name": "Susa", "x": 59, "y": 37.8, "founded": "c. 4200 BCE" },
+  {
+    "id": 46,
+    "name": "Persepolis",
+    "x": 59.2,
+    "y": 38,
+    "founded": "c. 518 BCE"
+  },
+  {
+    "id": 47,
+    "name": "Anuradhapura",
+    "x": 63,
+    "y": 40,
+    "founded": "c. 377 BCE"
+  },
+  { "id": 48, "name": "Troy", "x": 55.8, "y": 36.8, "founded": "c. 3000 BCE" },
+  { "id": 49, "name": "Argos", "x": 53.8, "y": 35.4, "founded": "c. 1200 BCE" },
+  { "id": 50, "name": "Megara", "x": 53.6, "y": 35.5, "founded": "c. 900 BCE" }
 ]

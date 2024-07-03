@@ -28,7 +28,6 @@ export default {
         const progressWidth = ref(0);
         const intervalId = ref(null);
         const isTransitioning = ref(false);
-        const mousePosition = ref(null);
         const images = [
             require('@/assets/images/0_HomePage/img1.jpg'),
             require('@/assets/images/0_HomePage/img2.jpg'),
@@ -72,31 +71,6 @@ export default {
             }, 500);
         };
 
-        const handleMouseMove = (event) => {
-            const { clientX, target } = event;
-            const { left, width } = target.getBoundingClientRect();
-            const x = clientX - left;
-            mousePosition.value = x / width;
-
-            if (mousePosition.value < 0.3) {
-                target.style.cursor = 'w-resize';
-                if (!isTransitioning.value) {
-                    prevImage();
-                }
-            } else if (mousePosition.value > 0.7) {
-                target.style.cursor = 'e-resize';
-                if (!isTransitioning.value) {
-                    nextImage();
-                }
-            } else {
-                target.style.cursor = 'default';
-            }
-        };
-
-        const resetSliderState = () => {
-            mousePosition.value = null;
-        };
-
         onMounted(() => {
             startSlider();
         });
@@ -111,8 +85,6 @@ export default {
             images,
             nextImage,
             prevImage,
-            handleMouseMove,
-            resetSliderState,
             isTransitioning
         };
     }
@@ -123,10 +95,10 @@ export default {
 .slider-container {
     position: relative;
     width: 100%;
-    height: 300px;
-    border-radius: 16px;
+    height: calc(100vh - 56px);
+    /* высота за вычетом высоты хедера */
+    border-radius: 0;
     overflow: hidden;
-    margin-top: 20px;
 }
 
 .progress-bars {
@@ -202,3 +174,4 @@ export default {
     background-color: rgba(255, 255, 255, 0.5) !important;
 }
 </style>
+
