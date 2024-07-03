@@ -9,7 +9,9 @@
                     class="map-image">
                     <!-- Display points on the map -->
                     <template v-for="point in visiblePoints" :key="point.id">
-                        <div class="map-point" :style="{ left: point.x + 'px', top: point.y + 'px' }"></div>
+                        <div class="map-point" :style="{ left: point.x + 'px', top: point.y + 'px' }">
+                            <span class="map-point-label">{{ point.name }}</span>
+                        </div>
                     </template>
                 </v-img>
                 <!-- Progress bar for time navigation -->
@@ -86,5 +88,17 @@ export default {
     transform: translate(-50%, -50%);
     cursor: pointer;
     z-index: 1000;
+}
+
+.map-point-label {
+    position: absolute;
+    top: -20px;
+    /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    /* Adjust font size as needed */
+    font-weight: normal;
+    /* Adjust label color */
 }
 </style>

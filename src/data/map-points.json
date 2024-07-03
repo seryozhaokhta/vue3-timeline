@@ -13,5 +13,44 @@
     "x": 537,
     "y": 141,
     "founded": "c. 3000 BCE"
-  }
+  },
+  { "id": 4, "name": "Cyclades", "x": 537, "y": 136, "founded": "c. 3000 BCE" },
+  {
+    "id": 5,
+    "name": "Mycenaean Greece",
+    "x": 529,
+    "y": 132,
+    "founded": "c. 1600 BCE"
+  },
+  {
+    "id": 6,
+    "name": "Ancient Greece",
+    "x": -1,
+    "y": -1,
+    "founded": "c. 800 BCE"
+  },
+  { "id": 7, "name": "Macedonia", "x": -1, "y": -1, "founded": "c. 808 BCE" },
+  { "id": 8, "name": "Pella", "x": -1, "y": -1, "founded": "c. 399 BCE" },
+  { "id": 9, "name": "Thrace", "x": 522, "y": 96, "founded": "c. 1000 BCE" },
+  { "id": 10, "name": "Pergamum", "x": -1, "y": -1, "founded": "c. 282 BCE" },
+  { "id": 11, "name": "Smyrna", "x": -1, "y": -1, "founded": "c. 1000 BCE" },
+  { "id": 12, "name": "Ephesus", "x": -1, "y": -1, "founded": "c. 1000 BCE" },
+  { "id": 13, "name": "Lydia", "x": -1, "y": -1, "founded": "c. 1200 BCE" },
+  { "id": 14, "name": "Phrygia", "x": -1, "y": -1, "founded": "c. 1200 BCE" },
+  { "id": 15, "name": "Colchis", "x": -1, "y": -1, "founded": "c. 2000 BCE" },
+  { "id": 16, "name": "Phoenicia", "x": -1, "y": -1, "founded": "c. 1500 BCE" },
+  { "id": 17, "name": "Cyrene", "x": -1, "y": -1, "founded": "c. 630 BCE" },
+  { "id": 18, "name": "Etruria", "x": 500, "y": 121, "founded": "c. 900 BCE" },
+  { "id": 19, "name": "Ancient Rome", "x": -1, "y": -1, "founded": "753 BCE" },
+  { "id": 20, "name": "Sardinia", "x": -1, "y": -1, "founded": "c. 1000 BCE" },
+  { "id": 21, "name": "Carthage", "x": -1, "y": -1, "founded": "c. 814 BCE" },
+  {
+    "id": 22,
+    "name": "Magna Graecia",
+    "x": -1,
+    "y": -1,
+    "founded": "c. 800 BCE"
+  },
+  { "id": 23, "name": "Syracuse", "x": -1, "y": -1, "founded": "733 BCE" },
+  { "id": 24, "name": "Taranto", "x": -1, "y": -1, "founded": "706 BCE" }
 ]
