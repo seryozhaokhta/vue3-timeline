@@ -1,0 +1,17 @@
+[
+  { "id": 1, "name": "Sumer", "x": 100, "y": 300, "founded": "c. 4500 BCE" },
+  {
+    "id": 2,
+    "name": "Ancient Egypt",
+    "x": 200,
+    "y": 200,
+    "founded": "c. 3100 BCE"
+  },
+  {
+    "id": 3,
+    "name": "Minoan civilization",
+    "x": 537,
+    "y": 141,
+    "founded": "c. 3000 BCE"
+  }
+]
