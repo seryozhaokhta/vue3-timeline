@@ -1,5 +1,5 @@
 <!-- src/components/NodesApp.vue -->
- 
+
 <template>
     <div>
         <!-- Interaction Panel -->
@@ -53,17 +53,15 @@
                 </text>
             </g>
             <!-- Artists -->
-            <g v-for="(artist, artistIndex) in filteredArtists" :key="artistIndex">
-                <circle :cx="artist.position.x" :cy="artist.position.y" :r="artist.isHovered ? 20 : 15"
-                    class="artist-circle" :style="artistCircleStyle" @mousedown="onMouseDown(artist, 'artist')"
-                    @touchstart.prevent="onTouchStart(artist, 'artist')" @mouseover="onMouseOver(artist)"
-                    @mouseout="onMouseOut(artist)"
+            <g v-for="(artist, artistIndex) in filteredArtists" :key="artistIndex"
+                :transform="'translate(' + artist.position.x + ',' + artist.position.y + ')'"
+                @mousedown="onMouseDown(artist, 'artist')" @touchstart.prevent="onTouchStart(artist, 'artist')">
+                <circle :cx="0" :cy="0" :r="artist.isHovered ? 20 : 15" class="artist-circle" :style="artistCircleStyle"
+                    @mouseover="onMouseOver(artist)" @mouseout="onMouseOut(artist)"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
-                <image :x="artist.position.x - 10" :y="artist.position.y - 10" width="20" height="20"
-                    :href="artist.photoURL"
+                <image :x="-10" :y="-10" width="20" height="20" :href="artist.photoURL"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
-                <text :x="artist.position.x" :y="artist.position.y + 35" class="artist-text" text-anchor="middle"
-                    :style="artistTextStyle"
+                <text :x="0" :y="25" class="artist-text" text-anchor="middle" :style="artistTextStyle"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16">
                     {{ artist.name }}
                 </text>
@@ -196,6 +194,7 @@ export default {
                 const y = event.clientY - svgRect.top;
                 dragging.value.position.x = x;
                 dragging.value.position.y = y;
+                updateElementPositions();
             }
         };
 
@@ -242,6 +241,7 @@ export default {
                 const y = event.touches[0].clientY - svgRect.top;
                 dragging.value.position.x = x;
                 dragging.value.position.y = y;
+                updateElementPositions();
             }
         };
 
@@ -318,30 +318,17 @@ export default {
                     break;
             }
             epochs.value = updatedEpochs;
-            updateBezierPaths();
+            updateElementPositions();
         };
 
-        const updateBezierPaths = () => {
+        const updateElementPositions = () => {
             nextTick(() => {
                 const paths = document.querySelectorAll('.bezier-path');
-                const texts = document.querySelectorAll('.epoch-text, .artist-text');
                 paths.forEach((path, index) => {
                     const artist = filteredArtists.value[index];
                     const epochPosition = epochPositions.value[artist.epoch];
                     const newD = drawBezier(epochPosition, artist.position);
                     path.setAttribute('d', newD);
-                });
-                texts.forEach((text, index) => {
-                    if (index < epochs.value.length) {
-                        const epoch = epochs.value[index];
-                        text.setAttribute('x', epoch.position.x);
-                        text.setAttribute('y', epoch.position.y + 45);
-                    } else {
-                        const artistIndex = index - epochs.value.length;
-                        const artist = filteredArtists.value[artistIndex];
-                        text.setAttribute('x', artist.position.x);
-                        text.setAttribute('y', artist.position.y + 35);
-                    }
                 });
             });
         };
@@ -393,7 +380,7 @@ export default {
             onEpochDoubleClick,
             onEpochTouchEnd,
             alignNodes,
-            updateBezierPaths,
+            updateElementPositions,
         };
     },
 };
@@ -436,4 +423,3 @@ svg {
     transition: d 0.5s;
 }
 </style>
-
