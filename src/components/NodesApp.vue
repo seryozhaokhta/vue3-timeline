@@ -61,7 +61,7 @@
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
                 <image :x="-10" :y="-10" width="20" height="20" :href="artist.photoURL"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
-                <text :x="0" :y="25" class="artist-text" text-anchor="middle" :style="artistTextStyle"
+                <text :x="0" :y="35" class="artist-text" text-anchor="middle" :style="artistTextStyle"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16">
                     {{ artist.name }}
                 </text>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import { useTheme } from 'vuetify';
 import artistsData from "@/data/artists-by-specialization-and-period-english.json";
 
@@ -342,6 +342,10 @@ export default {
             window.removeEventListener('resize', handleResize);
         });
 
+        // Watch for changes in positions and update paths accordingly
+        watch(artists, updateElementPositions, { deep: true });
+        watch(epochs, updateElementPositions, { deep: true });
+
         return {
             width,
             height,
@@ -421,5 +425,9 @@ svg {
     fill: transparent;
     pointer-events: none;
     transition: d 0.5s;
+}
+
+image {
+    transition: x 0.5s, y 0.5s;
 }
 </style>

@@ -20,10 +20,11 @@ export default {
     background-color: var(--v-background-base);
     color: var(--v-theme-on-background);
     padding: 16px;
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: 100%;
     text-align: center;
+    z-index: -1000;
 }
 
 p {
