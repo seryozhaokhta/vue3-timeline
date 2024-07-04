@@ -13,7 +13,7 @@
             <v-btn text :to="{ name: 'MapApp' }">Map</v-btn>
             <v-btn text :to="{ name: 'ArtTimeline' }">Timeline</v-btn>
             <v-btn @click="toggleTheme">
-                {{ $vuetify.theme.global.name === 'dark' ? '🌙' : '☀️' }}
+                <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-btn>
         </div>
 
@@ -34,24 +34,48 @@
             <v-list-item :to="{ name: 'MapApp' }">Map</v-list-item>
             <v-list-item :to="{ name: 'ArtTimeline' }">Timeline</v-list-item>
             <v-list-item @click="toggleTheme">
-                {{ $vuetify.theme.global.name === 'dark' ? '🌙' : '☀️' }}
+                <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>
 
 <script>
+import sunIcon from '@/assets/icons/sun.svg';
+import moonIcon from '@/assets/icons/moon.svg';
+
 export default {
     name: 'HeaderApp',
     data() {
         return {
-            menuOpen: false
+            menuOpen: false,
         };
+    },
+    computed: {
+        themeIcon() {
+            return this.$vuetify.theme.global.name === 'dark' ? moonIcon : sunIcon;
+        }
     },
     methods: {
         toggleTheme() {
             this.$vuetify.theme.global.name = this.$vuetify.theme.global.name === 'dark' ? 'light' : 'dark';
         },
+        preloadIcons() {
+            const link1 = document.createElement('link');
+            link1.rel = 'preload';
+            link1.href = sunIcon;
+            link1.as = 'image';
+            document.head.appendChild(link1);
+
+            const link2 = document.createElement('link');
+            link2.rel = 'preload';
+            link2.href = moonIcon;
+            link2.as = 'image';
+            document.head.appendChild(link2);
+        }
+    },
+    mounted() {
+        this.preloadIcons();
     },
 };
 </script>
@@ -79,6 +103,12 @@ export default {
     .v-application--wrap {
         padding-top: 64px;
     }
+}
+
+/* Стили для темы иконок */
+.theme-icon {
+    height: 24px;
+    width: 24px;
 }
 
 /* Стили для видимости иконки меню */
