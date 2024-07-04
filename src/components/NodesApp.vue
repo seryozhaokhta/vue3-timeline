@@ -20,6 +20,17 @@
                     <v-btn @click="resetFilters" class="mt-7">Reset Filters</v-btn>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="12" md="4">
+                    <v-btn @click="alignNodes('default')">Default Layout</v-btn>
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-btn @click="alignNodes('horizontal')">Horizontal Layout</v-btn>
+                </v-col>
+                <v-col cols="12" md="4">
+                    <v-btn @click="alignNodes('grid')">Grid Layout</v-btn>
+                </v-col>
+            </v-row>
         </v-container>
 
         <svg ref="svg" :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp"
@@ -62,7 +73,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useTheme } from 'vuetify';
 import artistsData from "@/data/artists-by-specialization-and-period-english.json";
 
@@ -73,12 +84,12 @@ export default {
         const width = ref(window.innerWidth > 768 ? 1000 : window.innerWidth * 0.9);
         const height = ref(window.innerWidth > 768 ? 1200 : window.innerHeight * 0.9);
         const epochs = ref([
-            { name: "Ancient", position: { x: 100, y: 50 }, isHovered: false },
-            { name: "Medieval", position: { x: 100, y: 150 }, isHovered: false },
-            { name: "Renaissance", position: { x: 100, y: 250 }, isHovered: false },
-            { name: "The Age of Enlightenment", position: { x: 100, y: 350 }, isHovered: false },
-            { name: "Romanticism", position: { x: 100, y: 450 }, isHovered: false },
-            { name: "Modernism", position: { x: 100, y: 550 }, isHovered: false },
+            { name: "Ancient", position: { x: 80, y: 50 }, isHovered: false },
+            { name: "Medieval", position: { x: 80, y: 150 }, isHovered: false },
+            { name: "Renaissance", position: { x: 80, y: 250 }, isHovered: false },
+            { name: "The Age of Enlightenment", position: { x: 80, y: 350 }, isHovered: false },
+            { name: "Romanticism", position: { x: 80, y: 450 }, isHovered: false },
+            { name: "Modernism", position: { x: 80, y: 550 }, isHovered: false },
         ]);
         const artists = ref([]);
         const dragging = ref(null);
@@ -144,7 +155,7 @@ export default {
                 Modernism: 0,
             };
             const yStep = 60;
-            const xOffset = window.innerWidth > 768 ? 90 : 45; // Offset for each epoch
+            const xOffset = window.innerWidth > 768 ? 60 : 25; // Offset for each epoch
 
             Object.keys(artistsData).forEach((epoch, epochIndex) => {
                 ["painters", "sculptors", "architects"].forEach((specialization) => {
@@ -279,6 +290,62 @@ export default {
             lastTap.value = new Date().getTime();
         };
 
+        const alignNodes = (layout) => {
+            let updatedEpochs = [...epochs.value];
+            switch (layout) {
+                case 'horizontal':
+                    updatedEpochs.forEach((epoch, index) => {
+                        epoch.position.x = 80 + (index * 150);
+                        epoch.position.y = 50;
+                    });
+                    break;
+                case 'grid':
+                    updatedEpochs.forEach((epoch, index) => {
+                        epoch.position.x = 80 + (index % 3) * 150;
+                        epoch.position.y = 50 + Math.floor(index / 3) * 150;
+                    });
+                    break;
+                case 'default':
+                default:
+                    updatedEpochs = [
+                        { name: "Ancient", position: { x: 80, y: 50 }, isHovered: false },
+                        { name: "Medieval", position: { x: 80, y: 150 }, isHovered: false },
+                        { name: "Renaissance", position: { x: 80, y: 250 }, isHovered: false },
+                        { name: "The Age of Enlightenment", position: { x: 80, y: 350 }, isHovered: false },
+                        { name: "Romanticism", position: { x: 80, y: 450 }, isHovered: false },
+                        { name: "Modernism", position: { x: 80, y: 550 }, isHovered: false },
+                    ];
+                    break;
+            }
+            epochs.value = updatedEpochs;
+            updateBezierPaths();
+        };
+
+        const updateBezierPaths = () => {
+            nextTick(() => {
+                const paths = document.querySelectorAll('.bezier-path');
+                const texts = document.querySelectorAll('.epoch-text, .artist-text');
+                paths.forEach((path, index) => {
+                    const artist = filteredArtists.value[index];
+                    const epochPosition = epochPositions.value[artist.epoch];
+                    const newD = drawBezier(epochPosition, artist.position);
+                    path.setAttribute('d', newD);
+                });
+                texts.forEach((text, index) => {
+                    if (index < epochs.value.length) {
+                        const epoch = epochs.value[index];
+                        text.setAttribute('x', epoch.position.x);
+                        text.setAttribute('y', epoch.position.y + 45);
+                    } else {
+                        const artistIndex = index - epochs.value.length;
+                        const artist = filteredArtists.value[artistIndex];
+                        text.setAttribute('x', artist.position.x);
+                        text.setAttribute('y', artist.position.y + 35);
+                    }
+                });
+            });
+        };
+
         onMounted(() => {
             loadArtists();
             window.addEventListener('resize', handleResize);
@@ -325,6 +392,8 @@ export default {
             isEpochVisible,
             onEpochDoubleClick,
             onEpochTouchEnd,
+            alignNodes,
+            updateBezierPaths,
         };
     },
 };
@@ -341,27 +410,30 @@ svg {
 }
 
 .epoch-circle {
-    transition: r 0.3s ease, fill 0.3s ease;
+    transition: r 0.3s ease, fill 0.3s ease, cx 0.5s, cy 0.5s;
 }
 
 .epoch-text {
     font-size: 14px;
     font-family: "Helvetica Neue", sans-serif;
+    transition: x 0.5s, y 0.5s;
 }
 
 .artist-circle {
-    transition: r 0.3s ease, fill 0.3s ease;
+    transition: r 0.3s ease, fill 0.3s ease, cx 0.5s, cy 0.5s;
 }
 
 .artist-text {
     font-size: 12px;
     font-family: "Helvetica Neue", sans-serif;
+    transition: x 0.5s, y 0.5s;
 }
 
 .bezier-path {
     stroke-width: 1;
     fill: transparent;
     pointer-events: none;
+    transition: d 0.5s;
 }
 </style>
 
