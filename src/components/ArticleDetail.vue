@@ -4,11 +4,16 @@
     <v-container>
         <v-row>
             <v-col cols="12">
+                <v-img :src="article.previewImage" aspect-ratio="16/9" class="mb-4"></v-img>
                 <h1>{{ article.title }}</h1>
+                <v-chip-group class="mb-4">
+                    <v-chip v-for="tag in article.tags" :key="tag">{{ tag }}</v-chip>
+                </v-chip-group>
+                <p class="text-caption mb-4">{{ article.readingTime }}</p>
                 <div v-for="(paragraph, index) in article.content" :key="index">
                     <p>{{ paragraph }}</p>
                 </div>
-                <v-btn @click="goBack">Back to Articles</v-btn>
+                <v-btn @click="goBack" class="mt-4">Back to Articles</v-btn>
             </v-col>
         </v-row>
     </v-container>

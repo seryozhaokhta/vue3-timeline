@@ -55,6 +55,11 @@ export default {
         const menuOpen = ref(false);
         const isDarkTheme = ref(theme.global.current.value === 'dark');
 
+        const sunIconImage = new Image();
+        const moonIconImage = new Image();
+        sunIconImage.src = sunIcon;
+        moonIconImage.src = moonIcon;
+
         const themeIcon = computed(() => {
             return isDarkTheme.value ? moonIcon : sunIcon;
         });
@@ -64,22 +69,10 @@ export default {
             theme.global.name.value = isDarkTheme.value ? 'dark' : 'light';
         };
 
-        const preloadIcons = () => {
-            const sunLink = document.createElement('link');
-            sunLink.rel = 'preload';
-            sunLink.href = sunIcon;
-            sunLink.as = 'image';
-            document.head.appendChild(sunLink);
-
-            const moonLink = document.createElement('link');
-            moonLink.rel = 'preload';
-            moonLink.href = moonIcon;
-            moonLink.as = 'image';
-            document.head.appendChild(moonLink);
-        };
-
         onMounted(() => {
-            preloadIcons();
+            // Preload images when the component mounts
+            sunIconImage.onload = () => console.log('Sun icon preloaded');
+            moonIconImage.onload = () => console.log('Moon icon preloaded');
         });
 
         return {

@@ -6,10 +6,17 @@
             <v-col cols="12">
                 <h1>Articles</h1>
                 <v-list>
-                    <v-list-item v-for="article in articles" :key="article.id" @click="goToArticle(article.id)">
+                    <v-list-item v-for="article in articles" :key="article.id" @click="goToArticle(article.id)"
+                        class="article-item">
+                        <v-list-item-avatar>
+                            <v-img :src="article.previewImage" class="preview-image"></v-img>
+                        </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title>{{ article.title }}</v-list-item-title>
                             <v-list-item-subtitle>{{ article.subtitle }}</v-list-item-subtitle>
+                            <v-chip-group>
+                                <v-chip v-for="tag in article.tags" :key="tag" class="tag">{{ tag }}</v-chip>
+                            </v-chip-group>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
@@ -40,5 +47,36 @@ export default {
 h1 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.article-item {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.article-item:hover {
+    background-color: #f5f5f5;
+}
+
+.preview-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+v-list-item-avatar {
+    margin-left: auto;
+}
+
+.tag {
+    margin: 4px;
+}
+
+@media (max-width: 600px) {
+    .preview-image {
+        width: 60px;
+        height: 60px;
+    }
 }
 </style>
