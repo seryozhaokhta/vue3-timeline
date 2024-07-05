@@ -51,11 +51,8 @@ h1 {
 
 .article-item {
     cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.article-item:hover {
-    background-color: #f5f5f5;
+    transition: border 0.3s;
+    padding: 10px;
 }
 
 .preview-image {
