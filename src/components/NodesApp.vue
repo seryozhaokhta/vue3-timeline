@@ -37,17 +37,18 @@
             @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
             <!-- Bezier Paths -->
             <path v-for="(artist, artistIndex) in filteredArtists" :key="'path-' + artistIndex"
-                :d="drawBezier(epochPositions[artist.epoch], artist.position)" class="bezier-path"
-                :style="bezierPathStyle"
+                :d="drawBezier(epochPositions[artist.epoch], artist.position)"
+                :class="{ 'bezier-path': true, 'dragging': dragging !== null }" :style="bezierPathStyle"
                 :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
             <!-- Epochs -->
-            <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex">
-                <circle :cx="epoch.position.x" :cy="epoch.position.y" :r="epoch.isHovered ? 20 : 15"
-                    class="epoch-circle" :style="epochCircleStyle" @mousedown="onMouseDown(epoch, 'epoch')"
-                    @dblclick="onEpochDoubleClick(epoch)" @touchstart.prevent="onTouchStart(epoch, 'epoch')"
-                    @touchend="onEpochTouchEnd(epoch)" :opacity="isEpochVisible(epoch) ? 1 : 0.16" />
-                <text :x="epoch.position.x" :y="epoch.position.y + 45" class="epoch-text" text-anchor="middle"
-                    :style="epochTextStyle" @mouseover="onEpochMouseOver(epoch)" @mouseout="onEpochMouseOut(epoch)"
+            <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex"
+                :transform="'translate(' + epoch.position.x + ',' + epoch.position.y + ')'">
+                <circle :r="epoch.isHovered ? 20 : 15" class="epoch-circle" :style="epochCircleStyle"
+                    @mousedown="onMouseDown(epoch, 'epoch')" @dblclick="onEpochDoubleClick(epoch)"
+                    @touchstart.prevent="onTouchStart(epoch, 'epoch')" @touchend="onEpochTouchEnd(epoch)"
+                    :opacity="isEpochVisible(epoch) ? 1 : 0.16" />
+                <text :y="45" class="epoch-text" text-anchor="middle" :style="epochTextStyle"
+                    @mouseover="onEpochMouseOver(epoch)" @mouseout="onEpochMouseOut(epoch)"
                     :opacity="isEpochVisible(epoch) ? 1 : 0.16">
                     {{ epoch.name }}
                 </text>
@@ -56,12 +57,12 @@
             <g v-for="(artist, artistIndex) in filteredArtists" :key="artistIndex"
                 :transform="'translate(' + artist.position.x + ',' + artist.position.y + ')'"
                 @mousedown="onMouseDown(artist, 'artist')" @touchstart.prevent="onTouchStart(artist, 'artist')">
-                <circle :cx="0" :cy="0" :r="artist.isHovered ? 20 : 15" class="artist-circle" :style="artistCircleStyle"
+                <circle :r="artist.isHovered ? 20 : 15" class="artist-circle" :style="artistCircleStyle"
                     @mouseover="onMouseOver(artist)" @mouseout="onMouseOut(artist)"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
                 <image :x="-10" :y="-10" width="20" height="20" :href="artist.photoURL"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
-                <text :x="0" :y="35" class="artist-text" text-anchor="middle" :style="artistTextStyle"
+                <text :y="35" class="artist-text" text-anchor="middle" :style="artistTextStyle"
                     :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16">
                     {{ artist.name }}
                 </text>
@@ -424,7 +425,11 @@ svg {
     stroke-width: 1;
     fill: transparent;
     pointer-events: none;
-    transition: d 0.5s;
+    transition: d 0.2s;
+}
+
+.bezier-path.dragging {
+    transition: d 0.02s;
 }
 
 image {
