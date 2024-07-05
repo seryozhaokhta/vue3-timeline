@@ -49,9 +49,8 @@ export default {
 .footer {
     background-color: var(--v-background-base);
     color: var(--v-theme-on-background);
-    padding: 16px;
+    padding: 6px;
     position: fixed;
-    bottom: 0;
     width: 100%;
     text-align: center;
     z-index: 1000;
@@ -81,6 +80,7 @@ export default {
     margin: 0 4px;
     background-color: grey;
     border-radius: 50%;
+    margin-bottom: 15px;
 }
 
 .support-links {

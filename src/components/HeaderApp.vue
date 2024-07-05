@@ -96,6 +96,8 @@ export default {
     top: 0;
     width: 100%;
     z-index: 1000;
+    box-shadow: none !important;
+    border-bottom: 1px solid lightgrey;
 }
 
 .v-navigation-drawer {
