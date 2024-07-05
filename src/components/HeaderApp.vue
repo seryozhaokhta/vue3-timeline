@@ -12,6 +12,7 @@
             <v-btn text :to="{ name: 'NodesApp' }">Nodes</v-btn>
             <v-btn text :to="{ name: 'MapApp' }">Map</v-btn>
             <v-btn text :to="{ name: 'ArtTimeline' }">Timeline</v-btn>
+            <v-btn text :to="{ name: 'ArticleList' }">Articles</v-btn>
             <v-btn @click="toggleTheme">
                 <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-btn>
@@ -33,6 +34,7 @@
             <v-list-item :to="{ name: 'NodesApp' }">Nodes</v-list-item>
             <v-list-item :to="{ name: 'MapApp' }">Map</v-list-item>
             <v-list-item :to="{ name: 'ArtTimeline' }">Timeline</v-list-item>
+            <v-list-item :to="{ name: 'ArticleList' }">Articles</v-list-item>
             <v-list-item @click="toggleTheme">
                 <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-list-item>
@@ -41,41 +43,50 @@
 </template>
 
 <script>
+import { ref, computed, onMounted } from 'vue';
+import { useTheme } from 'vuetify';
 import sunIcon from '@/assets/icons/sun.svg';
 import moonIcon from '@/assets/icons/moon.svg';
 
 export default {
     name: 'HeaderApp',
-    data() {
-        return {
-            menuOpen: false,
-        };
-    },
-    computed: {
-        themeIcon() {
-            return this.$vuetify.theme.global.name === 'dark' ? moonIcon : sunIcon;
-        }
-    },
-    methods: {
-        toggleTheme() {
-            this.$vuetify.theme.global.name = this.$vuetify.theme.global.name === 'dark' ? 'light' : 'dark';
-        },
-        preloadIcons() {
-            const link1 = document.createElement('link');
-            link1.rel = 'preload';
-            link1.href = sunIcon;
-            link1.as = 'image';
-            document.head.appendChild(link1);
+    setup() {
+        const theme = useTheme();
+        const menuOpen = ref(false);
+        const isDarkTheme = ref(theme.global.current.value === 'dark');
 
-            const link2 = document.createElement('link');
-            link2.rel = 'preload';
-            link2.href = moonIcon;
-            link2.as = 'image';
-            document.head.appendChild(link2);
-        }
-    },
-    mounted() {
-        this.preloadIcons();
+        const themeIcon = computed(() => {
+            return isDarkTheme.value ? moonIcon : sunIcon;
+        });
+
+        const toggleTheme = () => {
+            isDarkTheme.value = !isDarkTheme.value;
+            theme.global.name.value = isDarkTheme.value ? 'dark' : 'light';
+        };
+
+        const preloadIcons = () => {
+            const sunLink = document.createElement('link');
+            sunLink.rel = 'preload';
+            sunLink.href = sunIcon;
+            sunLink.as = 'image';
+            document.head.appendChild(sunLink);
+
+            const moonLink = document.createElement('link');
+            moonLink.rel = 'preload';
+            moonLink.href = moonIcon;
+            moonLink.as = 'image';
+            document.head.appendChild(moonLink);
+        };
+
+        onMounted(() => {
+            preloadIcons();
+        });
+
+        return {
+            menuOpen,
+            themeIcon,
+            toggleTheme,
+        };
     },
 };
 </script>

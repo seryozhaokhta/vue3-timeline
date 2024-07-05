@@ -6,6 +6,8 @@ import ArtistList from "../components/ArtistList.vue";
 import NodesApp from "../components/NodesApp.vue";
 import MapApp from "../components/MapApp.vue";
 import ArtTimeline from "../components/ArtTimeline.vue";
+import ArticleList from "../components/ArticleList.vue";
+import ArticleDetail from "../components/ArticleDetail.vue";
 
 const routes = [
   {
@@ -32,6 +34,17 @@ const routes = [
     path: "/timeline",
     name: "ArtTimeline",
     component: ArtTimeline,
+  },
+  {
+    path: "/articles",
+    name: "ArticleList",
+    component: ArticleList,
+  },
+  {
+    path: "/articles/:id",
+    name: "ArticleDetail",
+    component: ArticleDetail,
+    props: true,
   },
 ];
 

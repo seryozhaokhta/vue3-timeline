@@ -1,5 +1,5 @@
 <!-- src/components/MapApp.vue -->
- 
+
 <template>
     <v-container>
         <v-row>
@@ -238,7 +238,8 @@ export default {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     position: absolute;
-    bottom: 20px;
+    bottom: 100px;
+    /* Raised to avoid footer overlap */
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
