@@ -4,7 +4,7 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <v-img :src="article.previewImage" aspect-ratio="16/9" class="mb-4"></v-img>
+                <v-img :src="getImageUrl(article.previewImage)" aspect-ratio="16/9" class="mb-4"></v-img>
                 <h1>{{ article.title }}</h1>
                 <v-chip-group class="mb-4">
                     <v-chip v-for="tag in article.tags" :key="tag">{{ tag }}</v-chip>
@@ -20,23 +20,40 @@
 </template>
 
 <script>
-import articles from "@/data/articles.json";
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter, useRoute } from 'vue-router';
 
 export default {
     name: 'ArticleDetail',
-    data() {
-        return {
-            article: {}
+    setup() {
+        const store = useStore();
+        const router = useRouter();
+        const route = useRoute();
+        const articleId = Number(route.params.id);
+        const article = computed(() => store.getters.getArticleById(articleId));
+
+        const goBack = () => {
+            router.push({ name: 'ArticleList' });
         };
-    },
-    created() {
-        const articleId = this.$route.params.id;
-        this.article = articles.find(article => article.id === Number(articleId));
-    },
-    methods: {
-        goBack() {
-            this.$router.push({ name: 'ArticleList' });
-        }
+
+        const getImageUrl = (photoURL) => {
+            try {
+                if (!photoURL.startsWith('http')) {
+                    return require(`@/assets/images/articles/${photoURL}`);
+                }
+                return photoURL;
+            } catch (e) {
+                console.error(`Image not found: ${photoURL}`);
+                return require('@/assets/images/default-image.png');
+            }
+        };
+
+        return {
+            article,
+            goBack,
+            getImageUrl
+        };
     }
 };
 </script>

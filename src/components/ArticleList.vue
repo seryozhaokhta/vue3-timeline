@@ -9,7 +9,7 @@
                     <v-list-item v-for="article in articles" :key="article.id" @click="goToArticle(article.id)"
                         class="article-item">
                         <v-list-item-avatar>
-                            <v-img :src="article.previewImage" class="preview-image"></v-img>
+                            <v-img :src="getImageUrl(article.previewImage)" class="preview-image"></v-img>
                         </v-list-item-avatar>
                         <v-list-item-content>
                             <v-list-item-title>{{ article.title }}</v-list-item-title>
@@ -26,19 +26,41 @@
 </template>
 
 <script>
-import articles from "@/data/articles.json";
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'ArticleList',
-    data() {
+    setup() {
+        const store = useStore();
+        const router = useRouter();
+        const articles = computed(() => store.getters.getArticles);
+
+        const goToArticle = (id) => {
+            router.push({ name: 'ArticleDetail', params: { id } });
+        };
+
+        const getImageUrl = (photoURL) => {
+            try {
+                if (!photoURL.startsWith('http')) {
+                    return require(`@/assets/images/articles/${photoURL}`);
+                }
+                return photoURL;
+            } catch (e) {
+                console.error(`Image not found: ${photoURL}`);
+                return require('@/assets/images/default-image.png');
+            }
+        };
+
         return {
-            articles
+            articles,
+            goToArticle,
+            getImageUrl
         };
     },
-    methods: {
-        goToArticle(id) {
-            this.$router.push({ name: 'ArticleDetail', params: { id } });
-        }
+    created() {
+        this.$store.dispatch('fetchArticles');
     }
 };
 </script>
@@ -77,3 +99,4 @@ v-list-item-avatar {
     }
 }
 </style>
+

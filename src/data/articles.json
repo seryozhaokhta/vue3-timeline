@@ -3,7 +3,7 @@
     "id": 1,
     "title": "Ancient Sculpture",
     "subtitle": "An Overview of Ancient Sculptures",
-    "previewImage": "@/assets/images/sculpture.jpg",
+    "previewImage": "image1.png",
     "tags": ["Art", "Sculpture", "History"],
     "readingTime": "10 min",
     "content": [
@@ -20,7 +20,7 @@
     "id": 2,
     "title": "Ancient Architecture",
     "subtitle": "Exploring the Wonders of Ancient Architecture",
-    "previewImage": "@/assets/images/architecture.jpg",
+    "previewImage": "image2.png",
     "tags": ["Architecture", "History", "Engineering"],
     "readingTime": "12 min",
     "content": [
@@ -38,7 +38,7 @@
     "id": 3,
     "title": "Ancient Myths",
     "subtitle": "Understanding the Myths of Ancient Civilizations",
-    "previewImage": "@/assets/images/myths.jpg",
+    "previewImage": "image3.png",
     "tags": ["Mythology", "Culture", "Literature"],
     "readingTime": "15 min",
     "content": [
