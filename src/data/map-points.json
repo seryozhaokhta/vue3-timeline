@@ -1,25 +1,25 @@
 [
-  { "id": 1, "name": "Sumer", "x": 58.5, "y": 39, "founded": "c. 4500 BCE" },
+  { "id": 1, "name": "Sumer", "x": 60, "y": 30, "founded": "c. 4500 BCE" },
   {
     "id": 2,
     "name": "Ancient Egypt",
-    "x": 54,
-    "y": 42,
+    "x": 55.6,
+    "y": 32,
     "founded": "c. 3100 BCE"
   },
   {
     "id": 3,
     "name": "Minoan civilization",
-    "x": 55,
-    "y": 37,
+    "x": 54,
+    "y": 28.5,
     "founded": "c. 3000 BCE"
   },
   { "id": 4, "name": "Cyclades", "x": 54.5, "y": 37, "founded": "c. 3000 BCE" },
   {
     "id": 5,
     "name": "Mycenaean Greece",
-    "x": 54,
-    "y": 36,
+    "x": 53.2,
+    "y": 27,
     "founded": "c. 1600 BCE"
   },
   {

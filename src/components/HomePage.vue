@@ -2,7 +2,7 @@
 
 <template>
     <v-container fluid>
-        <v-row justify="center" class="full-height">
+        <v-row justify="center">
             <v-col cols="12" class="content-wrapper">
                 <h1 class="main-title">Welcome to the Art Theory App</h1>
                 <p class="intro-text">This app is designed to help you study art theory.</p>
@@ -12,16 +12,23 @@
                 </p>
             </v-col>
         </v-row>
+        <v-row justify="center">
+            <v-col cols="12" md="8">
+                <about-app></about-app>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
 <script>
 import ImageSlider from './ImageSlider.vue';
+import AboutApp from './AboutApp.vue';
 
 export default {
     name: 'HomePage',
     components: {
-        ImageSlider
+        ImageSlider,
+        AboutApp
     }
 };
 </script>
@@ -46,17 +53,8 @@ export default {
     margin-top: 20px;
 }
 
-.full-height {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 .content-wrapper {
     padding-top: 80px;
-    /* добавляем отступ сверху */
 }
 
 /* Добавление отступа сверху для мобильных устройств */
