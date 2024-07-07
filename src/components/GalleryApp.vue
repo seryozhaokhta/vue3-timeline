@@ -6,16 +6,18 @@
         <v-row>
             <v-col cols="12">
                 <div class="timeline-container">
-                    <div class="timeline">
-                        <div class="timeline-line"></div>
-                        <div v-for="(period, index) in periods" :key="index" class="epoch-circle"
-                            :style="{ left: `calc(${index * (100 / (periods.length - 1))}% - 35px)` }"
+                    <v-slider v-model="selectedPeriodIndex" class="timeline-slider" :max="periods.length - 1" step="1"
+                        thumb-label="always" thumb-color="lime" @input="selectPeriod" thumb-label-slot>
+                        <template #thumb-label="{ modelValue }">
+                            <span>{{ periods[modelValue]?.date }}</span>
+                        </template>
+                    </v-slider>
+                    <div class="period-labels">
+                        <span v-for="(period, index) in periods" :key="index" class="period-label"
+                            :style="{ left: `calc(${index * (100 / (periods.length - 1))}%)` }"
                             @click="selectPeriod(index)">
-                            {{ period }}
-                        </div>
-                        <div class="marker"
-                            :style="{ left: `calc(${selectedPeriodIndex * (100 / (periods.length - 1))}% - 10px)` }"
-                            @mousedown="startDrag"></div>
+                            {{ period?.name }}
+                        </span>
                     </div>
                 </div>
             </v-col>
@@ -37,30 +39,21 @@
 </template>
 
 <script>
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
     name: "GalleryApp",
     setup() {
         const store = useStore();
-        const periods = ref([
-            "Ancient",
-            "Medieval",
-            "Renaissance",
-            "The Age of Enlightenment",
-            "Romanticism",
-            "Modernism",
-        ]);
+        const periods = ref([]);
         const selectedPeriodIndex = ref(0);
-        const isDragging = ref(false);
-        const startX = ref(0);
 
         const gallery = computed(() => store.getters.getGallery);
         const filteredGallery = computed(() => {
             return periods.value[selectedPeriodIndex.value]
                 ? gallery.value.filter(
-                    (item) => item.period === periods.value[selectedPeriodIndex.value]
+                    (item) => item.period === periods.value[selectedPeriodIndex.value]?.name
                 )
                 : gallery.value;
         });
@@ -81,38 +74,20 @@ export default {
             selectedPeriodIndex.value = index;
         };
 
-        const startDrag = (event) => {
-            isDragging.value = true;
-            startX.value = event.clientX;
-            document.addEventListener("mousemove", onDrag);
-            document.addEventListener("mouseup", stopDrag);
-        };
-
-        const onDrag = (event) => {
-            if (!isDragging.value) return;
-            const deltaX = event.clientX - startX.value;
-            const timelineWidth = document.querySelector(".timeline").offsetWidth;
-            let newX = (deltaX / timelineWidth) * 100;
-            newX = Math.max(0, Math.min(newX, 100));
-            selectedPeriodIndex.value = Math.round(
-                (newX / 100) * (periods.value.length - 1)
-            );
-        };
-
-        const stopDrag = () => {
-            isDragging.value = false;
-            document.removeEventListener("mousemove", onDrag);
-            document.removeEventListener("mouseup", stopDrag);
+        const initializePeriods = () => {
+            const uniquePeriods = [];
+            gallery.value.forEach(item => {
+                if (!uniquePeriods.some(period => period.name === item.period)) {
+                    uniquePeriods.push({ name: item.period, date: item.date });
+                }
+            });
+            periods.value = uniquePeriods;
         };
 
         onMounted(() => {
-            document.addEventListener("mousemove", onDrag);
-            document.addEventListener("mouseup", stopDrag);
-        });
-
-        onUnmounted(() => {
-            document.removeEventListener("mousemove", onDrag);
-            document.removeEventListener("mouseup", stopDrag);
+            store.dispatch("fetchGallery").then(() => {
+                initializePeriods();
+            });
         });
 
         return {
@@ -121,11 +96,8 @@ export default {
             selectPeriod,
             getImageUrl,
             selectedPeriodIndex,
-            startDrag,
+            initializePeriods,
         };
-    },
-    created() {
-        this.$store.dispatch("fetchGallery");
     },
 };
 </script>
@@ -142,50 +114,30 @@ h1 {
     margin-bottom: 40px;
 }
 
-.timeline {
+.timeline-slider {
+    width: calc(100% - 70px);
+    margin: 0 auto;
+}
+
+.period-labels {
     position: relative;
-    height: 60px;
-}
-
-.timeline-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
+    height: 30px;
     width: 100%;
-    height: 2px;
-    background-color: grey;
-    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 35px;
 }
 
-.epoch-circle {
+.period-label {
     position: absolute;
-    top: -40px;
-    width: 70px;
-    height: 70px;
-    background-color: var(--epoch);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 0;
+    transform: translateX(-50%);
     cursor: pointer;
     transition: transform 0.3s;
-    user-select: none;
 }
 
-.epoch-circle:hover {
-    transform: scale(1.2);
-}
-
-.marker {
-    position: absolute;
-    top: 20px;
-    width: 20px;
-    height: 20px;
-    background-color: #bdff00;
-    border-radius: 50%;
-    transition: left 0.3s;
-    cursor: pointer;
-    user-select: none;
+.period-label:hover {
+    transform: translateX(-50%) scale(1.2);
 }
 
 .gallery-card {

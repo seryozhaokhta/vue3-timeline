@@ -2,7 +2,7 @@
 
 import { createStore } from "vuex";
 import articlesData from "@/data/articles.json";
-import galleryData from "@/data/gallery.json"; // Assuming you have a gallery.json file for gallery data
+import galleryData from "@/data/gallery.json";
 
 const store = createStore({
   state() {
