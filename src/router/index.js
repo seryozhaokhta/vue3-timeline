@@ -8,9 +8,11 @@ import MapApp from "../components/MapApp.vue";
 import ArtTimeline from "../components/ArtTimeline.vue";
 import ArticleList from "../components/ArticleList.vue";
 import ArticleDetail from "../components/ArticleDetail.vue";
-import GalleryApp from "../components/GalleryApp.vue"; // Import the new component
+import GalleryApp from "../components/GalleryApp.vue";
+import ProfileApp from "../components/ProfileApp.vue"; // Import the new component
 
 const routes = [
+  // existing routes
   {
     path: "/",
     name: "HomePage",
@@ -50,7 +52,12 @@ const routes = [
   {
     path: "/gallery",
     name: "GalleryApp",
-    component: GalleryApp, // Add the new route
+    component: GalleryApp,
+  },
+  {
+    path: "/profile",
+    name: "ProfileApp",
+    component: ProfileApp, // Add the new route
   },
 ];
 

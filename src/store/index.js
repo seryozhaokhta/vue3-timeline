@@ -11,6 +11,7 @@ const store = createStore({
       articles: articlesData,
       timelineData: {},
       gallery: galleryData,
+      user: null, // Added state for user
     };
   },
   mutations: {
@@ -26,6 +27,16 @@ const store = createStore({
     setGallery(state, gallery) {
       state.gallery = gallery;
     },
+    setUser(state, user) {
+      state.user = user;
+    },
+    updateUserProfile(state, { photo, firstName, lastName }) {
+      if (state.user) {
+        if (photo !== undefined) state.user.photo = photo;
+        if (firstName !== undefined) state.user.firstName = firstName;
+        if (lastName !== undefined) state.user.lastName = lastName;
+      }
+    },
   },
   actions: {
     fetchArtists({ commit }) {
@@ -39,6 +50,25 @@ const store = createStore({
     },
     fetchGallery({ commit }) {
       commit("setGallery", galleryData); // Using local data
+    },
+    async login({ commit }, { email, password }) {
+      // Replace with actual login logic
+      if (email === "admin" && password === "43A1@3#as22V4$E2") {
+        const user = { email, firstName: "Admin", lastName: "User" }; // Mock user
+        commit("setUser", user);
+        return user;
+      } else {
+        throw new Error("Invalid credentials");
+      }
+    },
+    async register({ commit }, { email }) {
+      // Replace with actual registration logic
+      const user = { email }; // Mock user
+      commit("setUser", user);
+      return user;
+    },
+    logout({ commit }) {
+      commit("setUser", null);
     },
   },
   getters: {
@@ -56,6 +86,9 @@ const store = createStore({
     },
     getGallery(state) {
       return state.gallery;
+    },
+    getUser(state) {
+      return state.user;
     },
   },
 });

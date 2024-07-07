@@ -13,7 +13,8 @@
             <v-btn text :to="{ name: 'MapApp' }">Map</v-btn>
             <v-btn text :to="{ name: 'ArtTimeline' }">Timeline</v-btn>
             <v-btn text :to="{ name: 'ArticleList' }">Articles</v-btn>
-            <v-btn text :to="{ name: 'GalleryApp' }">Gallery</v-btn> <!-- Added Gallery Link -->
+            <v-btn text :to="{ name: 'GalleryApp' }">Gallery</v-btn>
+            <v-btn text :to="{ name: 'ProfileApp' }">Profile</v-btn>
             <v-btn @click="toggleTheme">
                 <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-btn>
@@ -36,7 +37,8 @@
             <v-list-item :to="{ name: 'MapApp' }">Map</v-list-item>
             <v-list-item :to="{ name: 'ArtTimeline' }">Timeline</v-list-item>
             <v-list-item :to="{ name: 'ArticleList' }">Articles</v-list-item>
-            <v-list-item :to="{ name: 'GalleryApp' }">Gallery</v-list-item> <!-- Added Gallery Link -->
+            <v-list-item :to="{ name: 'GalleryApp' }">Gallery</v-list-item>
+            <v-list-item :to="{ name: 'ProfileApp' }">Profile</v-list-item>
             <v-list-item @click="toggleTheme">
                 <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-list-item>
@@ -47,15 +49,19 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import { useTheme } from 'vuetify';
+import { useStore } from 'vuex';
 import sunIcon from '@/assets/icons/sun.svg';
 import moonIcon from '@/assets/icons/moon.svg';
 
 export default {
     name: 'HeaderApp',
     setup() {
+        const store = useStore();
         const theme = useTheme();
         const menuOpen = ref(false);
         const isDarkTheme = ref(theme.global.current.value === 'dark');
+
+        const user = computed(() => store.getters.getUser);
 
         const sunIconImage = new Image();
         const moonIconImage = new Image();
@@ -81,6 +87,7 @@ export default {
             menuOpen,
             themeIcon,
             toggleTheme,
+            user,
         };
     },
 };
