@@ -13,6 +13,7 @@
             <v-btn text :to="{ name: 'MapApp' }">Map</v-btn>
             <v-btn text :to="{ name: 'ArtTimeline' }">Timeline</v-btn>
             <v-btn text :to="{ name: 'ArticleList' }">Articles</v-btn>
+            <v-btn text :to="{ name: 'GalleryApp' }">Gallery</v-btn> <!-- Added Gallery Link -->
             <v-btn @click="toggleTheme">
                 <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-btn>
@@ -35,6 +36,7 @@
             <v-list-item :to="{ name: 'MapApp' }">Map</v-list-item>
             <v-list-item :to="{ name: 'ArtTimeline' }">Timeline</v-list-item>
             <v-list-item :to="{ name: 'ArticleList' }">Articles</v-list-item>
+            <v-list-item :to="{ name: 'GalleryApp' }">Gallery</v-list-item> <!-- Added Gallery Link -->
             <v-list-item @click="toggleTheme">
                 <v-img :src="themeIcon" class="theme-icon" contain></v-img>
             </v-list-item>
@@ -85,12 +87,12 @@ export default {
 </script>
 
 <style scoped>
-/* Стили для кнопок и меню */
+/* Styles for buttons and menu */
 .v-btn {
     margin-left: 10px;
 }
 
-/* Дополнительные стили для адаптивности и внешнего вида могут быть добавлены здесь */
+/* Additional styles for responsiveness and appearance */
 .v-app-bar {
     position: fixed;
     top: 0;
@@ -104,20 +106,20 @@ export default {
     z-index: 2000;
 }
 
-/* Обеспечиваем, чтобы контент не перекрывался хедером на мобильных устройствах */
+/* Ensure content is not overlapped by header on mobile devices */
 @media (max-width: 960px) {
     .v-application--wrap {
         padding-top: 64px;
     }
 }
 
-/* Стили для темы иконок */
+/* Styles for theme icons */
 .theme-icon {
     height: 24px;
     width: 24px;
 }
 
-/* Стили для видимости иконки меню */
+/* Styles for menu icon visibility */
 .v-icon {
     font-size: 24px;
 }

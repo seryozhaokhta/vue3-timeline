@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Ancient Artworks",
+    "period": "Ancient",
+    "images": [
+      "assets/images/articles/image1.png",
+      "assets/images/articles/image2.png",
+      "assets/images/articles/image3.png",
+      "assets/images/articles/image4.png",
+      "assets/images/articles/image5.png",
+      "assets/images/articles/image6.png",
+      "assets/images/articles/image7.png",
+      "assets/images/articles/image8.png"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Medieval Artworks",
+    "period": "Medieval",
+    "images": [
+      "assets/images/articles/image9.png",
+      "assets/images/articles/image10.png",
+      "assets/images/articles/image11.png",
+      "assets/images/articles/image12.png",
+      "assets/images/articles/image13.png",
+      "assets/images/articles/image14.png",
+      "assets/images/articles/image15.png",
+      "assets/images/articles/image16.png"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Renaissance Artworks",
+    "period": "Renaissance",
+    "images": [
+      "assets/images/articles/image17.png",
+      "assets/images/articles/image18.png",
+      "assets/images/articles/image19.png",
+      "assets/images/articles/image20.png",
+      "assets/images/articles/image21.png",
+      "assets/images/articles/image22.png",
+      "assets/images/articles/image23.png",
+      "assets/images/articles/image24.png"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "The Age of Enlightenment Artworks",
+    "period": "The Age of Enlightenment",
+    "images": [
+      "assets/images/articles/image25.png",
+      "assets/images/articles/image26.png",
+      "assets/images/articles/image27.png",
+      "assets/images/articles/image28.png",
+      "assets/images/articles/image29.png",
+      "assets/images/articles/image30.png",
+      "assets/images/articles/image31.png",
+      "assets/images/articles/image32.png"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Romanticism Artworks",
+    "period": "Romanticism",
+    "images": [
+      "assets/images/articles/image33.png",
+      "assets/images/articles/image34.png",
+      "assets/images/articles/image35.png",
+      "assets/images/articles/image36.png",
+      "assets/images/articles/image37.png",
+      "assets/images/articles/image38.png",
+      "assets/images/articles/image39.png",
+      "assets/images/articles/image40.png"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Modernism Artworks",
+    "period": "Modernism",
+    "images": [
+      "assets/images/articles/image41.png",
+      "assets/images/articles/image42.png",
+      "assets/images/articles/image43.png",
+      "assets/images/articles/image44.png",
+      "assets/images/articles/image45.png",
+      "assets/images/articles/image46.png",
+      "assets/images/articles/image47.png",
+      "assets/images/articles/image48.png"
+    ]
+  }
+]

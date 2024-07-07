@@ -2,6 +2,7 @@
 
 import { createStore } from "vuex";
 import articlesData from "@/data/articles.json";
+import galleryData from "@/data/gallery.json"; // Assuming you have a gallery.json file for gallery data
 
 const store = createStore({
   state() {
@@ -9,6 +10,7 @@ const store = createStore({
       artists: [],
       articles: articlesData,
       timelineData: {},
+      gallery: galleryData,
     };
   },
   mutations: {
@@ -21,16 +23,22 @@ const store = createStore({
     setTimelineData(state, timelineData) {
       state.timelineData = timelineData;
     },
+    setGallery(state, gallery) {
+      state.gallery = gallery;
+    },
   },
   actions: {
     fetchArtists({ commit }) {
-      commit("setArtists", []); // Пример коммита, замените на реальный запрос
+      commit("setArtists", []); // Replace with actual data fetch logic
     },
     fetchArticles({ commit }) {
-      commit("setArticles", articlesData); // Используем локальные данные
+      commit("setArticles", articlesData); // Using local data
     },
     fetchTimelineData({ commit }) {
-      commit("setTimelineData", {}); // Пример коммита, замените на реальный запрос
+      commit("setTimelineData", {}); // Replace with actual data fetch logic
+    },
+    fetchGallery({ commit }) {
+      commit("setGallery", galleryData); // Using local data
     },
   },
   getters: {
@@ -45,6 +53,9 @@ const store = createStore({
     },
     getTimelineData(state) {
       return state.timelineData;
+    },
+    getGallery(state) {
+      return state.gallery;
     },
   },
 });

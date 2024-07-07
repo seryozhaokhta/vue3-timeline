@@ -8,6 +8,7 @@ import MapApp from "../components/MapApp.vue";
 import ArtTimeline from "../components/ArtTimeline.vue";
 import ArticleList from "../components/ArticleList.vue";
 import ArticleDetail from "../components/ArticleDetail.vue";
+import GalleryApp from "../components/GalleryApp.vue"; // Import the new component
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
     name: "ArticleDetail",
     component: ArticleDetail,
     props: true,
+  },
+  {
+    path: "/gallery",
+    name: "GalleryApp",
+    component: GalleryApp, // Add the new route
   },
 ];
 
