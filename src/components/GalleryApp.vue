@@ -9,7 +9,7 @@
                     <v-slider v-model="selectedPeriodIndex" class="timeline-slider" :max="periods.length - 1" step="1"
                         thumb-label="always" thumb-color="lime" @input="selectPeriod" thumb-label-slot>
                         <template #thumb-label="{ modelValue }">
-                            <span>{{ periods[modelValue]?.date }}</span>
+                            <span class="thumb-label">{{ periods[modelValue]?.date }}</span>
                         </template>
                     </v-slider>
                     <div class="period-labels">
@@ -76,8 +76,8 @@ export default {
 
         const initializePeriods = () => {
             const uniquePeriods = [];
-            gallery.value.forEach(item => {
-                if (!uniquePeriods.some(period => period.name === item.period)) {
+            gallery.value.forEach((item) => {
+                if (!uniquePeriods.some((period) => period.name === item.period)) {
                     uniquePeriods.push({ name: item.period, date: item.date });
                 }
             });
@@ -110,30 +110,31 @@ h1 {
 
 .timeline-container {
     position: relative;
-    height: 60px;
+    height: 100px;
+    /* Увеличиваем высоту контейнера */
     margin-bottom: 40px;
 }
 
 .timeline-slider {
-    width: calc(100% - 70px);
+    width: calc(100%);
     margin: 0 auto;
 }
 
-.period-labels {
-    position: relative;
-    height: 30px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 35px;
+
+.thumb-label {
+    font-size: 12px;
+    /* Уменьшаем шрифт */
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 .period-label {
     position: absolute;
-    top: 0;
+    top: 50px;
     transform: translateX(-50%);
     cursor: pointer;
     transition: transform 0.3s;
+    font-size: 14px;
 }
 
 .period-label:hover {
