@@ -1,72 +1,31 @@
-<!-- src/components/NodesApp.vue -->
+<!-- src/components/NodesPage/NodesApp.vue -->
 
 <template>
     <div>
         <!-- Interaction Panel -->
-        <v-container class="interaction-panel" fluid>
-            <v-row>
-                <v-col cols="12" md="3">
-                    <v-select v-model="selectedEpoch" :items="['All', ...epochNames]" label="Select Epoch"
-                        clearable></v-select>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-select v-model="selectedSpecialization" :items="['All', ...specializations]"
-                        label="Select Specialization" clearable></v-select>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-text-field v-model="searchQuery" label="Search Artists"></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-btn @click="resetFilters" class="mt-7">Reset Filters</v-btn>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12" md="4">
-                    <v-btn @click="alignNodes('default')">Default Layout</v-btn>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-btn @click="alignNodes('horizontal')">Horizontal Layout</v-btn>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-btn @click="alignNodes('grid')">Grid Layout</v-btn>
-                </v-col>
-            </v-row>
-        </v-container>
+        <InteractionPanel :selectedEpoch="selectedEpoch" :epochNames="epochNames"
+            :selectedSpecialization="selectedSpecialization" :specializations="specializations"
+            :searchQuery="searchQuery" @resetFilters="resetFilters" @alignNodes="alignNodes"
+            @update:selectedEpoch="value => selectedEpoch = value"
+            @update:selectedSpecialization="value => selectedSpecialization = value"
+            @update:searchQuery="value => searchQuery = value" />
 
         <svg ref="svg" :width="width" :height="height" @mousemove="onMouseMove" @mouseup="onMouseUp"
             @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd">
             <!-- Bezier Paths -->
-            <path v-for="(artist, artistIndex) in filteredArtists" :key="'path-' + artistIndex"
-                :d="drawBezier(epochPositions[artist.epoch], artist.position)"
-                :class="{ 'bezier-path': true, 'dragging': dragging !== null }" :style="bezierPathStyle"
-                :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
+            <BezierPaths :artists="filteredArtists" :epochPositions="epochPositions" :isHoveringEpoch="isHoveringEpoch"
+                :bezierPathStyle="bezierPathStyle" :drawBezier="drawBezier" :dragging="dragging" />
+
             <!-- Epochs -->
-            <g v-for="(epoch, epochIndex) in epochs" :key="epochIndex"
-                :transform="'translate(' + epoch.position.x + ',' + epoch.position.y + ')'">
-                <circle :r="epoch.isHovered ? 20 : 15" class="epoch-circle" :style="epochCircleStyle"
-                    @mousedown="onMouseDown(epoch, 'epoch')" @dblclick="onEpochDoubleClick(epoch)"
-                    @touchstart.prevent="onTouchStart(epoch, 'epoch')" @touchend="onEpochTouchEnd(epoch)"
-                    :opacity="isEpochVisible(epoch) ? 1 : 0.16" />
-                <text :y="45" class="epoch-text" text-anchor="middle" :style="epochTextStyle"
-                    @mouseover="onEpochMouseOver(epoch)" @mouseout="onEpochMouseOut(epoch)"
-                    :opacity="isEpochVisible(epoch) ? 1 : 0.16">
-                    {{ epoch.name }}
-                </text>
-            </g>
+            <EpochDisplay :epochs="epochs" :isEpochVisible="isEpochVisible" :epochCircleStyle="epochCircleStyle"
+                :epochTextStyle="epochTextStyle" @onMouseDown="onMouseDown" @onEpochDoubleClick="onEpochDoubleClick"
+                @onTouchStart="onTouchStart" @onEpochTouchEnd="onEpochTouchEnd" @onEpochMouseOver="onEpochMouseOver"
+                @onEpochMouseOut="onEpochMouseOut" />
+
             <!-- Artists -->
-            <g v-for="(artist, artistIndex) in filteredArtists" :key="artistIndex"
-                :transform="'translate(' + artist.position.x + ',' + artist.position.y + ')'"
-                @mousedown="onMouseDown(artist, 'artist')" @touchstart.prevent="onTouchStart(artist, 'artist')">
-                <circle :r="artist.isHovered ? 20 : 15" class="artist-circle" :style="artistCircleStyle"
-                    @mouseover="onMouseOver(artist)" @mouseout="onMouseOut(artist)"
-                    :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
-                <image :x="-10" :y="-10" width="20" height="20" :href="artist.photoURL"
-                    :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16" />
-                <text :y="35" class="artist-text" text-anchor="middle" :style="artistTextStyle"
-                    :opacity="artist.epoch === isHoveringEpoch || isHoveringEpoch === null ? 1 : 0.16">
-                    {{ artist.name }}
-                </text>
-            </g>
+            <ArtistDisplay :artists="filteredArtists" :isHoveringEpoch="isHoveringEpoch"
+                :artistCircleStyle="artistCircleStyle" :artistTextStyle="artistTextStyle" @onMouseDown="onMouseDown"
+                @onTouchStart="onTouchStart" @onMouseOver="onMouseOver" @onMouseOut="onMouseOut" />
         </svg>
     </div>
 </template>
@@ -75,8 +34,18 @@
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import { useTheme } from 'vuetify';
 import artistsData from "@/data/artists-by-specialization-and-period-english.json";
+import InteractionPanel from './InteractionPanel.vue';
+import EpochDisplay from './EpochDisplay.vue';
+import ArtistDisplay from './ArtistDisplay.vue';
+import BezierPaths from './BezierPaths.vue';
 
 export default {
+    components: {
+        InteractionPanel,
+        EpochDisplay,
+        ArtistDisplay,
+        BezierPaths,
+    },
     setup() {
         const theme = useTheme();
 
@@ -110,6 +79,7 @@ export default {
 
         const bezierPathStyle = computed(() => ({
             stroke: theme.current.value.colors.path,
+            fill: 'none',
         }));
 
         const epochCircleStyle = computed(() => ({
@@ -154,7 +124,7 @@ export default {
                 Modernism: 0,
             };
             const yStep = 60;
-            const xOffset = window.innerWidth > 768 ? 60 : 25; // Offset for each epoch
+            const xOffset = window.innerWidth > 768 ? 60 : 25;
 
             Object.keys(artistsData).forEach((epoch, epochIndex) => {
                 ["painters", "sculptors", "architects"].forEach((specialization) => {
@@ -178,8 +148,8 @@ export default {
         const calculateArtistPosition = (epoch, yOffset, xOffset) => {
             const epochPosition = epochPositions.value[epoch];
             return {
-                x: epochPosition.x + 300 + xOffset, // Position horizontally right from epochs with x offset
-                y: epochPosition.y + yOffset, // Sequential vertical positioning
+                x: epochPosition.x + 300 + xOffset,
+                y: epochPosition.y + yOffset,
             };
         };
 
@@ -264,13 +234,12 @@ export default {
         const handleResize = () => {
             width.value = window.innerWidth > 768 ? 1000 : window.innerWidth * 0.9;
             height.value = window.innerWidth > 768 ? 1200 : window.innerHeight * 0.9;
-            loadArtists(); // Reload artists with new xOffset
+            loadArtists();
         };
 
         const onEpochDoubleClick = (epoch) => {
-            // Move artists closer to the double-clicked epoch
-            const xOffset = 100; // Adjust the x offset as needed
-            const yOffsetIncrement = 40; // Adjust the y offset increment as needed
+            const xOffset = 100;
+            const yOffsetIncrement = 40;
             let yOffset = 0;
 
             artists.value.forEach((artist) => {
@@ -343,7 +312,6 @@ export default {
             window.removeEventListener('resize', handleResize);
         });
 
-        // Watch for changes in positions and update paths accordingly
         watch(artists, updateElementPositions, { deep: true });
         watch(epochs, updateElementPositions, { deep: true });
 
@@ -392,38 +360,14 @@ export default {
 </script>
 
 <style scoped>
-.interaction-panel {
-    margin-bottom: 20px;
-}
-
 svg {
     border: 1px solid #ccc;
     user-select: none;
 }
 
-.epoch-circle {
-    transition: r 0.3s ease, fill 0.3s ease, cx 0.5s, cy 0.5s;
-}
-
-.epoch-text {
-    font-size: 14px;
-    font-family: "Helvetica Neue", sans-serif;
-    transition: x 0.5s, y 0.5s;
-}
-
-.artist-circle {
-    transition: r 0.3s ease, fill 0.3s ease, cx 0.5s, cy 0.5s;
-}
-
-.artist-text {
-    font-size: 12px;
-    font-family: "Helvetica Neue", sans-serif;
-    transition: x 0.5s, y 0.5s;
-}
-
 .bezier-path {
     stroke-width: 1;
-    fill: transparent;
+    fill: none;
     pointer-events: none;
     transition: d 0.2s;
 }
@@ -436,3 +380,4 @@ image {
     transition: x 0.5s, y 0.5s;
 }
 </style>
+
