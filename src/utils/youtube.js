@@ -10,18 +10,16 @@ console.log("Channel ID:", CHANNEL_ID);
 
 export const fetchVideos = async () => {
   try {
-    const params = {
-      part: "snippet",
-      channelId: CHANNEL_ID,
-      maxResults: 10,
-      key: API_KEY,
-    };
-
-    console.log("Request Params:", params);
-
     const response = await axios.get(
       "https://www.googleapis.com/youtube/v3/search",
-      { params }
+      {
+        params: {
+          part: "snippet",
+          channelId: CHANNEL_ID,
+          maxResults: 10,
+          key: API_KEY,
+        },
+      }
     );
 
     console.log("YouTube API Response:", response.data);
@@ -35,10 +33,7 @@ export const fetchVideos = async () => {
     }));
   } catch (error) {
     console.error("Error fetching videos:", error);
-    console.error(
-      "Error details:",
-      error.response ? error.response.data : error.message
-    );
+    console.error("Error details:", error.response.data);
     throw error;
   }
 };

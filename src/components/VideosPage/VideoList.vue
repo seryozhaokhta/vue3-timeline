@@ -1,11 +1,11 @@
-<!-- src/components/VideosPage/VideoList.vue -->
+// src/components/VideosPage/VideoList.vue
 
 <template>
     <v-container>
         <v-row>
             <v-col cols="12">
                 <h1>Videos</h1>
-                <v-list>
+                <v-list v-if="videos.length">
                     <v-list-item v-for="video in videos" :key="video.id" @click="goToVideo(video.id)"
                         class="video-item">
                         <v-list-item-avatar>
@@ -54,6 +54,9 @@ export default {
     },
     async created() {
         try {
+            if (!process.env.VUE_APP_YOUTUBE_API_KEY || !process.env.VUE_APP_YOUTUBE_CHANNEL_ID) {
+                throw new Error("Missing YouTube API key or channel ID");
+            }
             await this.$store.dispatch('fetchVideos');
         } catch (err) {
             console.error("Failed to fetch videos:", err);
