@@ -10,6 +10,8 @@ import ArticleList from "../components/ArticleList.vue";
 import ArticleDetail from "../components/ArticleDetail.vue";
 import GalleryApp from "../components/GalleryApp.vue";
 import ProfileApp from "../components/ProfileApp.vue";
+import VideoList from "../components/VideosPage/VideoList.vue";
+import VideoDetail from "../components/VideosPage/VideoDetail.vue";
 
 const routes = [
   {
@@ -57,6 +59,17 @@ const routes = [
     path: "/profile",
     name: "ProfileApp",
     component: ProfileApp,
+  },
+  {
+    path: "/videos",
+    name: "VideoList",
+    component: VideoList,
+  },
+  {
+    path: "/videos/:id",
+    name: "VideoDetail",
+    component: VideoDetail,
+    props: true,
   },
 ];
 

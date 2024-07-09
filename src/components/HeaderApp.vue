@@ -81,6 +81,7 @@ export default {
             { name: 'ArtTimeline', label: 'Timeline' },
             { name: 'ArticleList', label: 'Articles' },
             { name: 'GalleryApp', label: 'Gallery' },
+            { name: 'VideoList', label: 'Videos' },
         ];
 
         return { menuOpen, themeIcon, toggleTheme, goHome, logo, menuItems };
@@ -147,3 +148,4 @@ export default {
     }
 }
 </style>
+

@@ -3,6 +3,7 @@
 import { createStore } from "vuex";
 import articlesData from "@/data/articles.json";
 import galleryData from "@/data/gallery.json";
+import { fetchVideos } from "@/utils/youtube";
 
 const store = createStore({
   state() {
@@ -11,7 +12,8 @@ const store = createStore({
       articles: articlesData,
       timelineData: {},
       gallery: galleryData,
-      user: null, // Added state for user
+      videos: [],
+      user: null,
     };
   },
   mutations: {
@@ -26,6 +28,9 @@ const store = createStore({
     },
     setGallery(state, gallery) {
       state.gallery = gallery;
+    },
+    setVideos(state, videos) {
+      state.videos = videos;
     },
     setUser(state, user) {
       state.user = user;
@@ -50,6 +55,10 @@ const store = createStore({
     },
     fetchGallery({ commit }) {
       commit("setGallery", galleryData); // Using local data
+    },
+    async fetchVideos({ commit }) {
+      const videos = await fetchVideos();
+      commit("setVideos", videos);
     },
     async login({ commit }, { email, password }) {
       // Replace with actual login logic
@@ -86,6 +95,12 @@ const store = createStore({
     },
     getGallery(state) {
       return state.gallery;
+    },
+    getVideos(state) {
+      return state.videos;
+    },
+    getVideoById: (state) => (id) => {
+      return state.videos.find((video) => video.id === id);
     },
     getUser(state) {
       return state.user;
