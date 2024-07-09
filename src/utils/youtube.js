@@ -8,6 +8,10 @@ const CHANNEL_ID = process.env.VUE_APP_YOUTUBE_CHANNEL_ID;
 console.log("API Key:", API_KEY);
 console.log("Channel ID:", CHANNEL_ID);
 
+if (!API_KEY || !CHANNEL_ID) {
+  throw new Error("Missing YouTube API key or channel ID");
+}
+
 export const fetchVideos = async () => {
   try {
     const response = await axios.get(
@@ -33,7 +37,6 @@ export const fetchVideos = async () => {
     }));
   } catch (error) {
     console.error("Error fetching videos:", error);
-    console.error("Error details:", error.response.data);
     throw error;
   }
 };
