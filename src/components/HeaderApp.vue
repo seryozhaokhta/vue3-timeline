@@ -75,7 +75,7 @@ export default {
         };
 
         const menuItems = [
-            { name: 'ArtistList', label: 'Artists List' },
+            { name: 'ArtistList', label: 'Artists' },
             { name: 'NodesApp', label: 'Nodes' },
             { name: 'MapApp', label: 'Map' },
             { name: 'ArtTimeline', label: 'Timeline' },

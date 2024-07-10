@@ -18,6 +18,18 @@
         "birthPlace": "Ephesus, Ionia",
         "years": "c. 440 – 380 BCE",
         "photoURL": "assets/images/Ancient/Parrhasius.png"
+      },
+      {
+        "name": "Gnosis",
+        "birthPlace": "Ephesus, Ionia",
+        "years": "c. 300 BC",
+        "photoURL": "assets/images/Ancient/Parrhasius.png"
+      },
+      {
+        "name": "Parrhasius",
+        "birthPlace": "Ephesus, Ionia",
+        "years": "c. 440 – 380 BCE",
+        "photoURL": "assets/images/Ancient/Parrhasius.png"
       }
     ],
     "sculptors": [
