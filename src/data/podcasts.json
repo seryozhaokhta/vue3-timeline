@@ -2,7 +2,7 @@
   "podcasts": [
     {
       "id": 1,
-      "title": "Первый выпуск",
+      "title": "First release",
       "audioUrl": "/path/to/audio/file1.mp3",
       "chapters": [
         {

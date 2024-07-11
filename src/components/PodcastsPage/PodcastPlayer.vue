@@ -4,11 +4,19 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <audio ref="audioPlayer" :src="podcast.audioUrl" controls @timeupdate="updateCurrentTime"></audio>
-                <v-btn @click="addBookmark">Add Bookmark</v-btn>
-                <v-btn @click="addNote">Add Note</v-btn>
+                <div class="audio-controls">
+                    <audio ref="audioPlayer" :src="podcast.audioUrl" controls @timeupdate="updateCurrentTime"></audio>
+                    <v-btn @click="addBookmark">Add Bookmark</v-btn>
+                    <v-btn @click="addNote">Add Note</v-btn>
+                </div>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col cols="12">
+                <div ref="visualizer" class="visualizer"></div>
+            </v-col>
+        </v-row>
+        <v-divider></v-divider>
         <v-row>
             <v-col cols="12">
                 <h2>Bookmarks</h2>
@@ -25,6 +33,7 @@
                 </v-list>
             </v-col>
         </v-row>
+        <v-divider></v-divider>
         <v-row>
             <v-col cols="12">
                 <h2>Notes</h2>
@@ -45,16 +54,18 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import podcastsData from '@/data/podcasts.json';
 
 export default {
     name: 'PodcastPlayer',
-    props: {
-        podcast: Object
-    },
-    setup(props, { emit }) {
+    setup() {
         const audioPlayer = ref(null);
         const currentTime = ref(0);
+        const route = useRoute();
+        const podcastId = computed(() => route.params.id);
+        const podcast = computed(() => podcastsData.podcasts.find(p => p.id == podcastId.value));
 
         const updateCurrentTime = () => {
             currentTime.value = audioPlayer.value.currentTime;
@@ -64,26 +75,30 @@ export default {
             const time = currentTime.value;
             const description = prompt('Enter description for the bookmark:');
             if (description) {
-                emit('update:podcast', { ...props.podcast, bookmarks: [...props.podcast.bookmarks, { time, description }] });
+                podcast.value.bookmarks.push({ time, description });
             }
         };
 
         const removeBookmark = (bookmark) => {
-            const bookmarks = props.podcast.bookmarks.filter(b => b !== bookmark);
-            emit('update:podcast', { ...props.podcast, bookmarks });
+            const index = podcast.value.bookmarks.indexOf(bookmark);
+            if (index > -1) {
+                podcast.value.bookmarks.splice(index, 1);
+            }
         };
 
         const addNote = () => {
             const time = currentTime.value;
             const content = prompt('Enter your note:');
             if (content) {
-                emit('update:podcast', { ...props.podcast, notes: [...props.podcast.notes, { time, content }] });
+                podcast.value.notes.push({ time, content });
             }
         };
 
         const removeNote = (note) => {
-            const notes = props.podcast.notes.filter(n => n !== note);
-            emit('update:podcast', { ...props.podcast, notes });
+            const index = podcast.value.notes.indexOf(note);
+            if (index > -1) {
+                podcast.value.notes.splice(index, 1);
+            }
         };
 
         const formatTime = (time) => {
@@ -92,9 +107,53 @@ export default {
             return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         };
 
+        onMounted(() => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const visualizer = document.querySelector('.visualizer');
+            visualizer.appendChild(canvas);
+
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            const source = audioContext.createMediaElementSource(audioPlayer.value);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+
+            analyser.fftSize = 256;
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            canvas.width = visualizer.clientWidth;
+            canvas.height = visualizer.clientHeight;
+
+            const draw = () => {
+                requestAnimationFrame(draw);
+
+                analyser.getByteFrequencyData(dataArray);
+
+                context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                context.fillRect(0, 0, canvas.width, canvas.height);
+
+                const barWidth = (canvas.width / bufferLength) * 2.5;
+                let barHeight;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = dataArray[i];
+                    context.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+                    context.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+
+                    x += barWidth + 1;
+                }
+            };
+
+            draw();
+        });
+
         return {
             audioPlayer,
             currentTime,
+            podcast,
             updateCurrentTime,
             addBookmark,
             removeBookmark,
@@ -109,5 +168,19 @@ export default {
 <style scoped>
 h2 {
     margin-top: 20px;
+}
+
+.audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.visualizer {
+    width: 100%;
+    height: 200px;
+    background-color: black;
+    margin-bottom: 20px;
 }
 </style>

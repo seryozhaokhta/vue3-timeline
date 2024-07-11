@@ -1,5 +1,5 @@
 <!-- src/components/PodcastsPage/PodcastList.vue -->
-
+ 
 <template>
     <v-container>
         <h1>Podcasts</h1>
@@ -20,18 +20,20 @@
 <script>
 import { ref, onMounted } from 'vue';
 import podcastsData from '@/data/podcasts.json';
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'PodcastList',
     setup() {
         const podcasts = ref([]);
+        const router = useRouter();
 
         onMounted(() => {
             podcasts.value = podcastsData.podcasts;
         });
 
         const selectPodcast = (podcast) => {
-            console.log(podcast);
+            router.push({ name: 'PodcastPlayer', params: { id: podcast.id } });
         };
 
         return {
