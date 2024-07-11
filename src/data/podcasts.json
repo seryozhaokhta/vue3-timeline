@@ -1,0 +1,25 @@
+{
+  "podcasts": [
+    {
+      "id": 1,
+      "title": "Первый выпуск",
+      "audioUrl": "/path/to/audio/file1.mp3",
+      "chapters": [
+        {
+          "id": 1,
+          "title": "Глава 1",
+          "start": 0,
+          "end": 60
+        },
+        {
+          "id": 2,
+          "title": "Глава 2",
+          "start": 60,
+          "end": 120
+        }
+      ],
+      "bookmarks": [],
+      "notes": []
+    }
+  ]
+}

@@ -12,6 +12,8 @@ import GalleryApp from "../components/GalleryPage/GalleryApp.vue";
 import ProfileApp from "../components/ProfilePage/ProfileApp.vue";
 import VideoList from "../components/VideosPage/VideoList.vue";
 import VideoDetail from "../components/VideosPage/VideoDetail.vue";
+import PodcastList from "../components/PodcastsPage/PodcastList.vue";
+import PodcastPlayer from "../components/PodcastsPage/PodcastPlayer.vue";
 
 const routes = [
   {
@@ -69,6 +71,17 @@ const routes = [
     path: "/videos/:id",
     name: "VideoDetail",
     component: VideoDetail,
+    props: true,
+  },
+  {
+    path: "/podcasts",
+    name: "PodcastList",
+    component: PodcastList,
+  },
+  {
+    path: "/podcasts/:id",
+    name: "PodcastPlayer",
+    component: PodcastPlayer,
     props: true,
   },
 ];

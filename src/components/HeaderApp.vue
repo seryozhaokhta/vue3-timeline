@@ -82,6 +82,7 @@ export default {
             { name: 'ArticleList', label: 'Articles' },
             { name: 'GalleryApp', label: 'Gallery' },
             { name: 'VideoList', label: 'Videos' },
+            { name: 'PodcastList', label: 'Podcasts' },
         ];
 
         return { menuOpen, themeIcon, toggleTheme, goHome, logo, menuItems };
@@ -148,4 +149,3 @@ export default {
     }
 }
 </style>
-
