@@ -6,8 +6,8 @@
             <v-col cols="12">
                 <div class="audio-controls">
                     <audio ref="audioPlayer" :src="podcast.audioUrl" controls @timeupdate="updateCurrentTime"></audio>
-                    <v-btn @click="addBookmark">Add Bookmark</v-btn>
-                    <v-btn @click="addNote">Add Note</v-btn>
+                    <v-btn @click="addBookmark" color="primary">Add Bookmark</v-btn>
+                    <v-btn @click="addNote" color="secondary">Add Note</v-btn>
                 </div>
             </v-col>
         </v-row>
@@ -50,12 +50,18 @@
                 </v-list>
             </v-col>
         </v-row>
+        <v-divider></v-divider>
+        <v-row>
+            <v-col cols="12">
+                <v-btn @click="goBack" color="info">Back to List</v-btn>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
 <script>
 import { ref, onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import podcastsData from '@/data/podcasts.json';
 
 export default {
@@ -64,6 +70,7 @@ export default {
         const audioPlayer = ref(null);
         const currentTime = ref(0);
         const route = useRoute();
+        const router = useRouter();
         const podcastId = computed(() => route.params.id);
         const podcast = computed(() => podcastsData.podcasts.find(p => p.id == podcastId.value));
 
@@ -105,6 +112,10 @@ export default {
             const minutes = Math.floor(time / 60);
             const seconds = Math.floor(time % 60);
             return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        };
+
+        const goBack = () => {
+            router.push({ name: 'PodcastList' });
         };
 
         onMounted(() => {
@@ -159,7 +170,8 @@ export default {
             removeBookmark,
             addNote,
             removeNote,
-            formatTime
+            formatTime,
+            goBack
         };
     }
 };
@@ -184,3 +196,4 @@ h2 {
     margin-bottom: 20px;
 }
 </style>
+
