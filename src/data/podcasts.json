@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "First release",
-      "audioUrl": "/path/to/audio/file1.mp3",
+      "audioUrl": "@/assets/podcasts/brodsky.mp3",
       "chapters": [
         {
           "id": 1,

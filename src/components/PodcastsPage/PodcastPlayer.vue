@@ -5,7 +5,7 @@
         <v-row>
             <v-col cols="12">
                 <div class="audio-controls">
-                    <audio ref="audioPlayer" :src="podcast.audioUrl" controls @timeupdate="updateCurrentTime"></audio>
+                    <audio ref="audioPlayer" :src="audioUrl" controls @timeupdate="updateCurrentTime"></audio>
                     <v-btn @click="addBookmark" color="primary">Add Bookmark</v-btn>
                     <v-btn @click="addNote" color="secondary">Add Note</v-btn>
                 </div>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import podcastsData from '@/data/podcasts.json';
 
@@ -68,14 +68,20 @@ export default {
     name: 'PodcastPlayer',
     setup() {
         const audioPlayer = ref(null);
+        const visualizer = ref(null);
         const currentTime = ref(0);
         const route = useRoute();
         const router = useRouter();
         const podcastId = computed(() => route.params.id);
         const podcast = computed(() => podcastsData.podcasts.find(p => p.id == podcastId.value));
+        const audioUrl = computed(() => require(`@/assets/podcasts/${podcast.value.audioUrl.split('/').pop()}`));
+        let audioContext = null;
+        let analyser = null;
 
         const updateCurrentTime = () => {
-            currentTime.value = audioPlayer.value.currentTime;
+            if (audioPlayer.value) {
+                currentTime.value = audioPlayer.value.currentTime;
+            }
         };
 
         const addBookmark = () => {
@@ -118,14 +124,15 @@ export default {
             router.push({ name: 'PodcastList' });
         };
 
-        onMounted(() => {
+        const initializeVisualizer = () => {
+            if (!audioPlayer.value || !visualizer.value) return;
+
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            const visualizer = document.querySelector('.visualizer');
-            visualizer.appendChild(canvas);
+            visualizer.value.appendChild(canvas);
 
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const analyser = audioContext.createAnalyser();
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
             const source = audioContext.createMediaElementSource(audioPlayer.value);
             source.connect(analyser);
             analyser.connect(audioContext.destination);
@@ -134,8 +141,8 @@ export default {
             const bufferLength = analyser.frequencyBinCount;
             const dataArray = new Uint8Array(bufferLength);
 
-            canvas.width = visualizer.clientWidth;
-            canvas.height = visualizer.clientHeight;
+            canvas.width = visualizer.value.clientWidth;
+            canvas.height = visualizer.value.clientHeight;
 
             const draw = () => {
                 requestAnimationFrame(draw);
@@ -151,7 +158,7 @@ export default {
 
                 for (let i = 0; i < bufferLength; i++) {
                     barHeight = dataArray[i];
-                    context.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
+                    context.fillStyle = `rgb(${barHeight + 100}, 50, 50)`;
                     context.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
 
                     x += barWidth + 1;
@@ -159,12 +166,26 @@ export default {
             };
 
             draw();
+        };
+
+        onMounted(() => {
+            initializeVisualizer();
+        });
+
+        watch(audioUrl, () => {
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+            initializeVisualizer();
         });
 
         return {
             audioPlayer,
+            visualizer,
             currentTime,
             podcast,
+            audioUrl,
             updateCurrentTime,
             addBookmark,
             removeBookmark,
