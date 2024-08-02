@@ -62,12 +62,10 @@ h1 {
 
 .description {
     white-space: pre-line;
-    /* To preserve line breaks in the description */
     text-align: justify;
     margin-bottom: 10px;
     overflow-y: auto;
     padding-right: 10px;
-    /* Space for scrollbar */
 }
 
 .v-btn {
